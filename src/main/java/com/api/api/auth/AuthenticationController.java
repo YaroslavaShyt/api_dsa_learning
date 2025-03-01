@@ -1,8 +1,8 @@
 package com.api.api.auth;
 
 import com.api.api.services.auth.JwtService;
-import com.api.api.user.User;
-import com.api.api.user.UserRepository;
+import com.api.api.entities.User;
+import com.api.api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

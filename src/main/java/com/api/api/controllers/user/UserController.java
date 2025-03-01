@@ -1,5 +1,6 @@
-package com.api.api.user;
+package com.api.api.controllers.user;
 
+import com.api.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
