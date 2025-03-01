@@ -1,4 +1,4 @@
-package com.api.api.user;
+package com.api.api.entities;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -62,6 +62,16 @@ public class User implements Serializable, UserDetails {
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "bytes", nullable = false)
+    private int bytes = 10;
+
+    @Column(name = "fans", nullable = false)
+    private int fans = 10;
+
+    @Column(name = "hash", nullable = false)
+    private int hash = 10;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
