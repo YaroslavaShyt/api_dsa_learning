@@ -1,4 +1,4 @@
-package com.api.api.auth;
+package com.api.api.controllers.auth;
 
 import com.api.api.services.auth.JwtService;
 import com.api.api.entities.User;
