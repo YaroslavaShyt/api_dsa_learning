@@ -1,12 +1,19 @@
 package com.api.api.entities.achievements;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Setter
+@Getter
 @Embeddable
 public class UserAchievementId implements Serializable {
 
     private Long userId;
+
     private Long achievementId;
 
 
@@ -15,22 +22,6 @@ public class UserAchievementId implements Serializable {
 
     public UserAchievementId(Long userId, Long achievementId) {
         this.userId = userId;
-        this.achievementId = achievementId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getAchievementId() {
-        return achievementId;
-    }
-
-    public void setAchievementId(Long achievementId) {
         this.achievementId = achievementId;
     }
 
