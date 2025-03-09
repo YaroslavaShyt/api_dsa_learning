@@ -3,6 +3,7 @@ package com.api.api.controllers.achievements;
 
 import com.api.api.entities.achievements.Achievement;
 import com.api.api.entities.achievements.UserAchievement;
+import com.api.api.entities.achievements.UserAchievementsDTO;
 import com.api.api.services.achievements.AchievementsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class AchievementsController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<UserAchievement> getAchievementsByUserId(@PathVariable Long userId) {
+    public List<UserAchievementsDTO> getAchievementsByUserId(@PathVariable Long userId) {
         return userAchievementService.getAchievementsByUserId(userId);
     }
 

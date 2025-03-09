@@ -31,7 +31,7 @@ public class AuthenticationController {
     JwtService jwtService;
 
     @PostMapping("/signup")
-    public String registerUser(@RequestBody User user) {
+    public Object registerUser(@RequestBody User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             return "Error: Username is already taken!";
         }
@@ -43,18 +43,35 @@ public class AuthenticationController {
                 passwordEncoder.encode(user.getPassword())
         );
         userRepository.save(newUser);
-        return "User registered successfully!";
+
+        String generatedToken = jwtService.generateToken(newUser.getUsername());
+
+        return new Object() {
+            public String token = generatedToken;
+            public Long userId = newUser.getId();
+        };
     }
 
     @PostMapping("/signin")
-    public String authenticateUser(@RequestBody User user) {
+    public Object authenticateUser(@RequestBody User user) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         user.getUsername(),
                         user.getPassword()
                 )
         );
+
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return jwtService.generateToken(userDetails.getUsername());
+
+        User authenticatedUser = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String generatedToken = jwtService.generateToken(userDetails.getUsername());
+
+        return new Object() {
+            public String token = generatedToken;
+            public Long userId = authenticatedUser.getId();
+        };
     }
+
 }
