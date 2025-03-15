@@ -16,14 +16,14 @@ public class StreakController {
     @Autowired
     private StreakService streakService;
 
-    @GetMapping("/{userId}")
-    public List<Streak> getStreak(@PathVariable Long userId) {
-        return streakService.getStreakForUser(userId);
+    @GetMapping("/")
+    public List<Streak> getStreak(@RequestHeader("X-User-Id") long id) {
+        return streakService.getStreakForUser(id);
     }
 
-    @PostMapping("/{userId}/update")
-    public ResponseEntity<String> updateStreak(@PathVariable Long userId, @RequestBody StreakStatusRequest request) {
-        streakService.updateStreakForUser(userId, request.status);
+    @PostMapping("/update")
+    public ResponseEntity<String> updateStreak(@RequestHeader("X-User-Id") long id, @RequestBody StreakStatusRequest request) {
+        streakService.updateStreakForUser(id, request.status);
         return ResponseEntity.ok("Streak updated successfully");
     }
 

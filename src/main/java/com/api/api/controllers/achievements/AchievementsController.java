@@ -27,15 +27,15 @@ public class AchievementsController {
         return userAchievementService.getAllAchievements();
     }
 
-    @GetMapping("/user/{userId}")
-    public List<UserAchievementsDTO> getAchievementsByUserId(@PathVariable Long userId) {
-        return userAchievementService.getAchievementsByUserId(userId);
+    @GetMapping("/user/")
+    public List<UserAchievementsDTO> getAchievementsByUserId(@RequestHeader("X-User-Id") long id) {
+        return userAchievementService.getAchievementsByUserId(id);
     }
 
-    @PostMapping("/user/{userId}/add/{achievementId}")
-    public ResponseEntity<UserAchievement> addAchievementForUser(@PathVariable Long userId,
+    @PostMapping("/user/add/{achievementId}")
+    public ResponseEntity<UserAchievement> addAchievementForUser(@RequestHeader("X-User-Id") long id,
                                                                  @PathVariable Long achievementId) {
-        UserAchievement userAchievement = userAchievementService.addAchievementForUser(userId, achievementId);
+        UserAchievement userAchievement = userAchievementService.addAchievementForUser(id, achievementId);
         return ResponseEntity.ok(userAchievement);
     }
 }
