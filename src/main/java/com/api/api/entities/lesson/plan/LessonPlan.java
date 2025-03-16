@@ -6,25 +6,25 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "LessonPlan", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+@Table(name = "lesson_plan", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 public class LessonPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "step1_id", nullable = false)
-    private LessonPlanStep step1;
+    private LessonPlanStep step1_id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "step2_id", nullable = false)
-    private LessonPlanStep step2;
+    private LessonPlanStep step2_id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "step3_id", nullable = false)
-    private LessonPlanStep step3;
+    private LessonPlanStep step3_id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "step4_id", nullable = false)
-    private LessonPlanStep step4;
+    private LessonPlanStep step4_id;
 }

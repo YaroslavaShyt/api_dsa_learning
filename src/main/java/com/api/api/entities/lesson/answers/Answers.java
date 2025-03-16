@@ -6,10 +6,12 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "Answers", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+@Table(name = "answers", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 public class Answers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String answer;
 }

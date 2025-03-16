@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "LessonPlanStep", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+@Table(name = "lesson_plan_step", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 public class LessonPlanStep {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

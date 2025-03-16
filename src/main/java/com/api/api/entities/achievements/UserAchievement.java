@@ -1,12 +1,10 @@
 package com.api.api.entities.achievements;
 
-import com.api.api.entities.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Setter

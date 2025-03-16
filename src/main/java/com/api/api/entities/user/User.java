@@ -1,4 +1,4 @@
-package com.api.api.entities;
+package com.api.api.entities.user;
 
 import java.io.Serial;
 import java.io.Serializable;

@@ -1,6 +1,6 @@
 package com.api.api.controllers.streak;
 
-import com.api.api.entities.Streak;
+import com.api.api.entities.streak.Streak;
 import com.api.api.services.streak.StreakService;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;

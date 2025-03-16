@@ -1,5 +1,6 @@
-package com.api.api.entities;
+package com.api.api.entities.streak;
 
+import com.api.api.entities.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
