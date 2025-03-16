@@ -1,6 +1,6 @@
-package com.api.api.repositories;
+package com.api.api.repositories.streak;
 
-import com.api.api.entities.Streak;
+import com.api.api.entities.streak.Streak;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;

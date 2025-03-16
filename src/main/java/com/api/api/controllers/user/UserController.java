@@ -1,6 +1,6 @@
 package com.api.api.controllers.user;
 
-import com.api.api.entities.User;
+import com.api.api.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,18 +16,20 @@ public class UserController {
         return userService.create(user);
     }
 
-    @GetMapping("/{id}")
-    public User getUser(@PathVariable long id) {
+    @GetMapping
+    public User getUser(@RequestHeader("X-User-Id") long id) {
+//        System.out.println("id");
+//        System.out.println(id);
         return userService.get(id);
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+    @PutMapping
+    public User updateUser(@RequestHeader("X-User-Id") Long id, @RequestBody User user) {
         return userService.update(id, user);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    @DeleteMapping
+    public void deleteUser(@RequestHeader("X-User-Id") Long id) {
         userService.delete(id);
     }
 }

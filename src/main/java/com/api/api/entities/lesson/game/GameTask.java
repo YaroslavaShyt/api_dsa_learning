@@ -1,0 +1,30 @@
+package com.api.api.entities.lesson.game;
+
+import com.api.api.entities.lesson.answers.AnswerVariants;
+import lombok.Getter;
+import lombok.Setter;
+
+import jakarta.persistence.*;
+
+@Setter
+@Getter
+@Entity
+@Table(name = "game_task", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+public class GameTask {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private int questionNumber;
+
+    @Column(nullable = false)
+    private String question;
+
+    @ManyToOne
+    @JoinColumn(name = "answers", nullable = false)
+    private AnswerVariants answers;
+
+}
+

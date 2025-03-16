@@ -1,9 +1,9 @@
 package com.api.api.services.streak;
 
-import com.api.api.entities.Streak;
-import com.api.api.entities.User;
-import com.api.api.repositories.StreakRepository;
-import com.api.api.repositories.UserRepository;
+import com.api.api.entities.streak.Streak;
+import com.api.api.entities.user.User;
+import com.api.api.repositories.streak.StreakRepository;
+import com.api.api.repositories.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
