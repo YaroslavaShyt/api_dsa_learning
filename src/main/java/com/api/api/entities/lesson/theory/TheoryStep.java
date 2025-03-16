@@ -3,8 +3,12 @@ package com.api.api.entities.lesson.theory;
 import com.api.api.entities.lesson.plan.LessonPlan;
 import com.api.api.entities.lesson.plan.LessonPlanStep;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @NoArgsConstructor
 @Table(name = "theory_step", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})

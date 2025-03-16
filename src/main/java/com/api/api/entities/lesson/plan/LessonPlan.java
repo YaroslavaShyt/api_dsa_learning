@@ -2,8 +2,12 @@ package com.api.api.entities.lesson.plan;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @NoArgsConstructor
 @Table(name = "lesson_plan", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
