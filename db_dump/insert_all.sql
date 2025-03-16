@@ -49,5 +49,7 @@ insert into game_task (questionNumber,
 INSERT INTO GAME (name, time_limit) VALUES('Алгоритми сортування: Вступ', 360);
 insert into game_task_to_game (game_id, game_task_id) values (1, 1);
 
+INSERT INTO topic (topic_name, learning_category_id) VALUES  ('Алгоритми сортування', 1);
+
 INSERT INTO Lesson (game_id, theory_id, lesson_plan_id) VALUES(1, 2, 1);
 
