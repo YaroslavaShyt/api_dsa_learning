@@ -26,5 +26,8 @@ public class GameTask {
     @JoinColumn(name = "answers", nullable = false)
     private AnswerVariants answers;
 
+    @ManyToOne
+    @JoinColumn(name = "task_answers_type", nullable = false)
+    private GameTaskAnswersType answersType;
 }
 

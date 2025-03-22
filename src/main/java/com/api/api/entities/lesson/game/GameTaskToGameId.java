@@ -10,12 +10,12 @@ import java.util.Objects;
 @Getter
 public class GameTaskToGameId implements Serializable {
 
-    private Integer game;
-    private Integer gameTask;
+    private Long game;
+    private Long gameTask;
 
     public GameTaskToGameId() {}
 
-    public GameTaskToGameId(Integer game, Integer gameTask) {
+    public GameTaskToGameId(Long game, Long gameTask) {
         this.game = game;
         this.gameTask = gameTask;
     }
