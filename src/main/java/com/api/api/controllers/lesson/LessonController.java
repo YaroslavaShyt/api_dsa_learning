@@ -1,6 +1,7 @@
 package com.api.api.controllers.lesson;
 
 import com.api.api.entities.lesson.Lesson;
+import com.api.api.entities.lesson.LessonSummaryDTO;
 import com.api.api.services.lesson.LessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,11 @@ public class LessonController {
     public ResponseEntity<Lesson> getLessonById(@PathVariable Long id) {
         Optional<Lesson> lesson = lessonService.getLessonById(id);
         return lesson.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/summary")
+    public List<LessonSummaryDTO> getLessonSummary() {
+        return lessonService.getLessonSummaries();
     }
 }
 
