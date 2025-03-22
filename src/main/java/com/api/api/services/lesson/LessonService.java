@@ -23,24 +23,26 @@ public class LessonService {
     }
 
 
-    public List<LessonSummaryDTO> getLessonSummaries() {
+    public Map<String, List<LessonSummaryDTO>> getLessonsByCategory() {
         List<Lesson> lessons = lessonRepository.findAll();
-        List<LessonSummaryDTO> lessonSummaries = new ArrayList<>();
+        Map<String, List<LessonSummaryDTO>> categorizedLessons = new HashMap<>();
 
         for (Lesson lesson : lessons) {
-            String topicName = lesson.getTopic() != null ? lesson.getTopic().getTopicName() : "";
-            String lessonTitle = lesson.getTitle();
-            Map<String, String> lessonPlanSteps = lesson.getLessonPlan() != null ? lesson.getLessonPlan().getStepsMap() : new HashMap<>();
+            String categoryName = lesson.getTopic().getCategory().getName();
 
+            categorizedLessons.putIfAbsent(categoryName, new ArrayList<>());
+
+            Map<String, String> lessonPlanSteps = lesson.getLessonPlan() != null ? lesson.getLessonPlan().getStepsMap() : new HashMap<>();
             LessonSummaryDTO summaryDTO = new LessonSummaryDTO(
                     lesson.getId(),
-                    topicName,
-                    lessonTitle,
+                    lesson.getTopic().getTopicName(),
+                    lesson.getTitle(),
                     lessonPlanSteps
             );
-            lessonSummaries.add(summaryDTO);
+
+            categorizedLessons.get(categoryName).add(summaryDTO);
         }
 
-        return lessonSummaries;
+        return categorizedLessons;
     }
 }

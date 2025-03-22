@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -29,8 +30,9 @@ public class LessonController {
     }
 
     @GetMapping("/summary")
-    public List<LessonSummaryDTO> getLessonSummary() {
-        return lessonService.getLessonSummaries();
+    public ResponseEntity<Map<String, List<LessonSummaryDTO>>> getLessonsByCategory() {
+        Map<String, List<LessonSummaryDTO>> categorizedLessons = lessonService.getLessonsByCategory();
+        return ResponseEntity.ok(categorizedLessons);
     }
 }
 
