@@ -3,6 +3,7 @@ package com.api.api.entities.lesson;
 import com.api.api.entities.lesson.game.Game;
 import com.api.api.entities.lesson.plan.LessonPlan;
 import com.api.api.entities.lesson.theory.Theory;
+import com.api.api.entities.topic.Topic;
 import lombok.Getter;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,10 @@ public class Lesson {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "topic_id", nullable = false)
+    private Topic topic;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
@@ -31,6 +36,9 @@ public class Lesson {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "lesson_plan_id", nullable = false)
     private LessonPlan lessonPlan;
+
+    @Column(name = "title", nullable = false)
+    private String title;
 
 }
 

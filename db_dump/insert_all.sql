@@ -1,3 +1,4 @@
+INSERT INTO learning_category (name) VALUES ('ALGORITHMS'), ('DATA_STRUCTURES');
 INSERT INTO lesson_plan_step (number, name)
 VALUES (1, 'Огляд алгоритмів сортування та їх важливість у програмуванні'),
        (2, 'Визначення поняття "сортування" та основні терміни'),
@@ -51,5 +52,5 @@ insert into game_task_to_game (game_id, game_task_id) values (1, 1);
 
 INSERT INTO topic (topic_name, learning_category_id) VALUES  ('Алгоритми сортування', 1);
 
-INSERT INTO Lesson (game_id, theory_id, lesson_plan_id) VALUES(1, 2, 1);
+INSERT INTO Lesson (game_id, topic_id, theory_id, lesson_plan_id) VALUES(1, 1, 2, 1);
 

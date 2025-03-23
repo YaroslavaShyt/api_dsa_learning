@@ -32,9 +32,9 @@ CREATE TABLE IF NOT EXISTS UserTrainings
 );
 
 
-CREATE TABLE IF NOT EXISTS LearningCategory
+CREATE TABLE IF NOT EXISTS learning_category
 (
-    id   INT AUTO_INCREMENT PRIMARY KEY,
+    id   BIGINT AUTO_INCREMENT PRIMARY KEY,
     NAME varchar(50) NOT NULL UNIQUE
 );
 
@@ -109,7 +109,9 @@ CREATE TABLE IF NOT EXISTS game_task
     questionNumber INT    NOT NULL,
     question       TEXT   NOT NULL,
     answers        BIGINT NOT NULL,
-    FOREIGN KEY (answers) REFERENCES answer_variants (id)
+    task_answers_type BIGINT NOT NULL,
+    FOREIGN KEY (answers) REFERENCES answer_variants (id),
+    FOREIGN KEY (task_answers_type) REFERENCES game_task_answers_type(id)
 );
 
 CREATE TABLE IF NOT EXISTS game
@@ -132,23 +134,28 @@ CREATE TABLE IF NOT EXISTS topic
 (
     id                   BIGINT AUTO_INCREMENT PRIMARY KEY,
     topic_name           VARCHAR(255),
-    learning_category_id int NOT NULL,
-    FOREIGN KEY (learning_category_id) REFERENCES LearningCategory (id)
+    learning_category_id bigint NOT NULL,
+    FOREIGN KEY (learning_category_id) REFERENCES learning_category (id)
 );
 
 CREATE TABLE IF NOT EXISTS lesson
 (
     id             BIGINT AUTO_INCREMENT PRIMARY KEY,
-    game_id        BIGINT NOT NULL,
-    topic_id       BIGINT NOT NULL,
-    theory_id      BIGINT NOT NULL,
-    lesson_plan_id BIGINT NOT NULL,
+    game_id        BIGINT       NOT NULL,
+    topic_id       BIGINT       NOT NULL,
+    theory_id      BIGINT       NOT NULL,
+    lesson_plan_id BIGINT       NOT NULL,
+    title          varchar(255) NOT NULL,
     FOREIGN KEY (game_id) REFERENCES Game (id),
     FOREIGN KEY (topic_id) REFERENCES Topic (id),
     FOREIGN KEY (theory_id) REFERENCES Theory (id),
     FOREIGN KEY (lesson_plan_id) REFERENCES lesson_plan (id)
 );
 
+CREATE TABLE IF NOT EXISTS game_task_answers_type (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY ,
+    name varchar(40) NOT NULL
+);
 
 
 
