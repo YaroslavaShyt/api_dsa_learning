@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Trainings
     CONSTRAINT chk_timeSpent CHECK (timeSpent >= 0)
 );
 
-CREATE TABLE IF NOT EXISTS UserTrainings
+CREATE TABLE IF NOT EXISTS user_trainings
 (
     user_id     BIGINT,
     training_id BIGINT,
