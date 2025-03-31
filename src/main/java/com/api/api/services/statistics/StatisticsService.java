@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +22,9 @@ public class StatisticsService {
         LocalDate currentDate = LocalDate.now();
         LocalDate threeMonthsAgo = currentDate.minusMonths(3);
 
-        // Fetch statistics from the repository
+        Date startDate = Date.from(threeMonthsAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDate = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
         List<MonthlyStatisticsDTO> statistics = userTrainingRepository
                 .findStatisticsBetweenDates(threeMonthsAgo, currentDate);
 
@@ -29,9 +33,9 @@ public class StatisticsService {
 
         // Process the result and aggregate by month and category
         for (MonthlyStatisticsDTO stat : statistics) {
-            int month = stat.getMonth();
+            int month = stat.getMonth(); // Ensure month is between 1 and 12, not 0-based
             String category = stat.getCategory();
-            int totalTime = stat.getTotalTime();
+            Long totalTime = stat.getTotalTime();
 
             // Initialize month if not already done
             result.computeIfAbsent(month, k -> new HashMap<>());
@@ -39,10 +43,13 @@ public class StatisticsService {
             result.get(month).putIfAbsent("data_structures", 0);
 
             // Add the time to the appropriate category
+            // category name
             if ("algorithms".equals(category)) {
-                result.get(month).put("algorithms", result.get(month).get("algorithms") + totalTime);
+                int a = totalTime.intValue();
+                result.get(month).put("algorithms", result.get(month).get("algorithms") + totalTime.intValue());
             } else if ("data_structures".equals(category)) {
-                result.get(month).put("data_structures", result.get(month).get("data_structures") + totalTime);
+                int a = totalTime.intValue();
+                result.get(month).put("data_structures", result.get(month).get("data_structures") + totalTime.intValue());
             }
         }
 
@@ -55,4 +62,5 @@ public class StatisticsService {
 
         return result;
     }
+
 }

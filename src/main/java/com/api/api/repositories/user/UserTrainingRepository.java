@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface UserTrainingRepository extends JpaRepository<UserTraining, Long> {
@@ -16,7 +17,7 @@ public interface UserTrainingRepository extends JpaRepository<UserTraining, Long
 
 
     @Query("SELECT new com.api.api.controllers.statistics.MonthlyStatisticsDTO(" +
-            "FUNCTION('MONTH', ut.date), " +
+            "EXTRACT(MONTH FROM ut.date), " +
             "lc.topicName, " +
             "SUM(ut.time)) " +
             "FROM UserTraining ut " +
