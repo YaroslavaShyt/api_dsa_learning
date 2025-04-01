@@ -18,13 +18,15 @@ public interface UserTrainingRepository extends JpaRepository<UserTraining, Long
 
     @Query("SELECT new com.api.api.controllers.statistics.MonthlyStatisticsDTO(" +
             "EXTRACT(MONTH FROM ut.date), " +
-            "lc.topicName, " +
+           // "lc.topicName, " +
+            "lc.category.name, " + // Додаємо name з таблиці learning_category
             "SUM(ut.time)) " +
             "FROM UserTraining ut " +
             "JOIN ut.training t " +
             "JOIN t.topic lc " +
+            "JOIN lc.category category " +
             "WHERE ut.date BETWEEN :startDate AND :endDate " +
-            "GROUP BY EXTRACT(MONTH FROM ut.date), lc.topicName " +
+            "GROUP BY EXTRACT(MONTH FROM ut.date), lc.topicName, lc.category.name " + // Додаємо name до групування
             "ORDER BY EXTRACT(MONTH FROM ut.date) ASC")
     List<MonthlyStatisticsDTO> findStatisticsBetweenDates(LocalDate startDate, LocalDate endDate);
 
