@@ -1,11 +1,11 @@
 
-INSERT INTO ACHIEVEMENTS (NAME, DESCRIPTION) VALUES ('savvy', '');
-INSERT INTO ACHIEVEMENTS (NAME, DESCRIPTION) VALUES ('responsibility', '');
-INSERT INTO ACHIEVEMENTS (NAME, DESCRIPTION) VALUES ('persistence', '');
-INSERT INTO ACHIEVEMENTS (NAME, DESCRIPTION) VALUES ('devotion', '');
-INSERT INTO ACHIEVEMENTS (NAME, DESCRIPTION) VALUES ('junior', '');
-INSERT INTO ACHIEVEMENTS (NAME, DESCRIPTION) VALUES ('middle', '');
-INSERT INTO ACHIEVEMENTS (NAME, DESCRIPTION) VALUES ('senior', '');
-INSERT INTO ACHIEVEMENTS (NAME, DESCRIPTION) VALUES ('team-lead', '');
+INSERT INTO achievements (id, name, description) VALUES (1, 'savvy', '');
+INSERT INTO achievements (id, name, description) VALUES (2, 'responsibility', '');
+INSERT INTO achievements (id, name, description) VALUES (3, 'persistence', '');
+INSERT INTO achievements (id, name, description) VALUES (4, 'devotion', '');
+INSERT INTO achievements (id, name, description) VALUES (5, 'junior', '');
+INSERT INTO achievements (id, name, description) VALUES (6, 'middle', '');
+INSERT INTO achievements (id, name, description) VALUES (7, 'senior', '');
+INSERT INTO achievements (id, name, description) VALUES (8, 'team-lead', '');
 
-SELECT * FROM ACHIEVEMENTS;
+SELECT * FROM achievements;
