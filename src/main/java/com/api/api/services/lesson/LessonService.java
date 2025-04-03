@@ -44,6 +44,7 @@ public class LessonService {
             Map<String, String> lessonPlanSteps = lesson.getLessonPlan() != null ? lesson.getLessonPlan().getStepsMap() : new HashMap<>();
             LessonSummaryDTO summaryDTO = new LessonSummaryDTO(
                     lesson.getId(),
+                    lesson.getGame().getId(),
                     topicName,
                     lesson.getTitle(),
                     lessonPlanSteps

@@ -12,12 +12,14 @@ import java.util.Map;
 public class LessonSummaryDTO {
 
     private Long lessonId;
+    private Long gameId;
     private String topicName;
     private String lessonTitle;
     private Map<String, String> lessonPlanSteps;
 
-    public LessonSummaryDTO(Long lessonId, String topicName, String lessonTitle,  Map<String, String> lessonPlanSteps) {
+    public LessonSummaryDTO(Long lessonId, Long gameId, String topicName, String lessonTitle,  Map<String, String> lessonPlanSteps) {
         this.lessonId = lessonId;
+        this.gameId = gameId;
         this.topicName = topicName;
         this.lessonTitle = lessonTitle;
         this.lessonPlanSteps = lessonPlanSteps;

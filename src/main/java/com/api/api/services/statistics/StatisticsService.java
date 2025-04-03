@@ -17,23 +17,22 @@ public class StatisticsService {
     @Autowired
     private UserTrainingRepository userTrainingRepository;
 
-    public Map<Integer, Map<String, Integer>> getLastThreeMonthsStatistics() {
-         String algorithms = "ALGORITHMS";
-         String dataStructures = "DATA_STRUCTURES";
+    public Map<Integer, Map<String, Integer>> getLastThreeMonthsStatistics(Long userId) {
+        String algorithms = "ALGORITHMS";
+        String dataStructures = "DATA_STRUCTURES";
         LocalDate currentDate = LocalDate.now();
         LocalDate threeMonthsAgo = currentDate.minusMonths(3);
 
+        // Тепер передаємо userId в метод репозиторію
         List<MonthlyStatisticsDTO> statistics = userTrainingRepository
-                .findStatisticsBetweenDates(threeMonthsAgo, currentDate);
+                .findStatisticsBetweenDatesAndUser(userId, threeMonthsAgo, currentDate);
 
         Map<Integer, Map<String, Integer>> result = new HashMap<>();
-
 
         for (MonthlyStatisticsDTO stat : statistics) {
             int month = stat.getMonth();
             String category = stat.getCategory();
             Long totalTime = stat.getTotalTime();
-
 
             result.computeIfAbsent(month, k -> new HashMap<>());
             result.get(month).putIfAbsent(algorithms, 0);
@@ -55,5 +54,6 @@ public class StatisticsService {
 
         return result;
     }
+
 
 }
