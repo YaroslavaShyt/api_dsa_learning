@@ -72,6 +72,11 @@ public class User implements Serializable, UserDetails {
     @Column(name = "hash", nullable = false)
     private int hash = 10;
 
+    @Column(name = "avatars", nullable = false)
+    private String avatars;
+
+    @Column(name = "current_avatar", nullable = false)
+    private String currentAvatar;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

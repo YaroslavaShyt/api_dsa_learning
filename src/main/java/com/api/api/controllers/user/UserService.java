@@ -5,6 +5,8 @@ import com.api.api.repositories.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class UserService {
 
@@ -20,9 +22,37 @@ public class UserService {
     }
 
     public User update(Long id, User user) {
-        user.setId(id);
-        return userRepository.save(user);
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        if (user.getFirstName() != null) {
+            existingUser.setFirstName(user.getFirstName());
+        }
+        if (user.getLastName() != null) {
+            existingUser.setLastName(user.getLastName());
+        }
+        if (user.getPassword() != null) {
+            existingUser.setPassword(user.getPassword());
+        }
+        if (user.getBytes() != 0) {
+            existingUser.setBytes(user.getBytes());
+        }
+        if (user.getFans() != 0) {
+            existingUser.setFans(user.getFans());
+        }
+        if (user.getHash() != 0) {
+            existingUser.setHash(user.getHash());
+        }
+        if (user.getAvatars() != null) {
+            existingUser.setAvatars(user.getAvatars());
+        }
+        if (user.getCurrentAvatar() != null) {
+            existingUser.setCurrentAvatar(user.getCurrentAvatar());
+        }
+
+        return userRepository.save(existingUser);
     }
+
 
     public void delete(Long id) {
         userRepository.deleteById(id);
