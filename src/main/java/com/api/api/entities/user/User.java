@@ -84,6 +84,9 @@ public class User implements Serializable, UserDetails {
     @Column(name = "vibration", nullable = false)
     private boolean vibration;
 
+    @Column(name = "fans_updated_last", updatable = true)
+    private LocalDateTime fansUpdatedLast;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
