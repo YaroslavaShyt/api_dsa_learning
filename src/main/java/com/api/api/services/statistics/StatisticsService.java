@@ -23,7 +23,6 @@ public class StatisticsService {
         LocalDate currentDate = LocalDate.now();
         LocalDate threeMonthsAgo = currentDate.minusMonths(3);
 
-        // Тепер передаємо userId в метод репозиторію
         List<MonthlyStatisticsDTO> statistics = userTrainingRepository
                 .findStatisticsBetweenDatesAndUser(userId, threeMonthsAgo, currentDate);
 

@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/trainings")
@@ -21,9 +20,25 @@ public class UserTrainingController {
     private UserTrainingRepository userTrainingRepository;
 
     @GetMapping("/user")
-    public ResponseEntity<List<Long>> getUserTrainings(@RequestHeader("X-User-Id") Long userId) {
-        List<Long> trainingIds = userTrainingRepository.findTrainingIdsByUserId(userId);
-        return ResponseEntity.ok(trainingIds);
+    public ResponseEntity<Map<String, List<Long>>> getUserTrainings(@RequestHeader("X-User-Id") Long userId) {
+            List<Object[]> results = userTrainingRepository.findTrainingIdsByUserIdAndCategories(userId);
+
+            Map<String, List<Long>> trainingIdsByCategory = new HashMap<>();
+            trainingIdsByCategory.put("ALGORITHMS", new ArrayList<>());
+            trainingIdsByCategory.put("DATA_STRUCTURES", new ArrayList<>());
+
+            for (Object[] result : results) {
+                Long trainingId = (Long) result[0];
+                String categoryName = (String) result[1];
+
+                if ("ALGORITHMS".equals(categoryName)) {
+                    trainingIdsByCategory.get("ALGORITHMS").add(trainingId);
+                } else if ("DATA_STRUCTURES".equals(categoryName)) {
+                    trainingIdsByCategory.get("DATA_STRUCTURES").add(trainingId);
+                }
+            }
+
+        return ResponseEntity.ok(trainingIdsByCategory);
     }
 
     @PostMapping("/complete")

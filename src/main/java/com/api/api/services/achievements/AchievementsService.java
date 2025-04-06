@@ -10,6 +10,7 @@ import com.api.api.repositories.achievements.UserAchievementsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,14 +49,22 @@ public class AchievementsService {
                 .collect(Collectors.toList());
     }
 
-    public UserAchievement addAchievementForUser(Long userId, Long achievementId) {
-        Achievement achievement = achievementRepository.findById(achievementId)
-                .orElseThrow(() -> new IllegalArgumentException("Achievement not found"));
+    public List<UserAchievement> addAchievementsForUser(Long userId, List<Long> achievementIds) {
+        List<Achievement> achievements = achievementRepository.findAllById(achievementIds);
+        if (achievements.size() != achievementIds.size()) {
+            throw new IllegalArgumentException("Some achievements not found");
+        }
 
-        UserAchievementId id = new UserAchievementId(userId, achievementId);
-        UserAchievement userAchievement = new UserAchievement();
-        userAchievement.setId(id);
+        List<UserAchievement> userAchievements = new ArrayList<>();
+        for (Achievement achievement : achievements) {
+            UserAchievementId id = new UserAchievementId(userId, achievement.getId());
+            UserAchievement userAchievement = new UserAchievement();
+            userAchievement.setId(id);
 
-        return userAchievementRepository.save(userAchievement);
+            userAchievements.add(userAchievement);
+        }
+
+        return userAchievementRepository.saveAll(userAchievements);
     }
+
 }

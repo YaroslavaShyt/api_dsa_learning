@@ -78,6 +78,12 @@ public class User implements Serializable, UserDetails {
     @Column(name = "current_avatar", nullable = false)
     private String currentAvatar;
 
+    @Column(name = "sound", nullable = false)
+    private boolean sound;
+
+    @Column(name = "vibration", nullable = false)
+    private boolean vibration;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

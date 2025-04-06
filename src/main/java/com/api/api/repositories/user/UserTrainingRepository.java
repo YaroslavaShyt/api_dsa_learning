@@ -12,8 +12,15 @@ import java.util.List;
 
 public interface UserTrainingRepository extends JpaRepository<UserTraining, Long> {
 
-    @Query("SELECT ut.trainingId FROM UserTraining ut WHERE ut.userId = :userId")
-    List<Long> findTrainingIdsByUserId(@Param("userId") Long userId);
+    @Query("SELECT ut.trainingId, category.name " +
+            "FROM UserTraining ut " +
+            "JOIN ut.training t " +
+            "JOIN t.topic topic " +
+            "JOIN topic.category category " +
+            "WHERE ut.userId = :userId " +
+            "AND category.name IN ('ALGORITHMS', 'DATA_STRUCTURES')")
+    List<Object[]> findTrainingIdsByUserIdAndCategories(@Param("userId") Long userId);
+
 
 
     @Query("SELECT new com.api.api.controllers.statistics.MonthlyStatisticsDTO(" +

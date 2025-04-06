@@ -5,6 +5,7 @@ import com.api.api.entities.achievements.Achievement;
 import com.api.api.entities.achievements.UserAchievement;
 import com.api.api.entities.achievements.UserAchievementsDTO;
 import com.api.api.services.achievements.AchievementsService;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,11 +33,16 @@ public class AchievementsController {
         return userAchievementService.getAchievementsByUserId(id);
     }
 
-    @PostMapping("/user/add/{achievementId}")
-    public ResponseEntity<UserAchievement> addAchievementForUser(@RequestHeader("X-User-Id") long id,
-                                                                 @PathVariable Long achievementId) {
-        UserAchievement userAchievement = userAchievementService.addAchievementForUser(id, achievementId);
-        return ResponseEntity.ok(userAchievement);
+    @PostMapping("/user/add")
+    public ResponseEntity<List<UserAchievement>> addAchievementsForUser(@RequestHeader("X-User-Id") long id,
+                                                                        @RequestBody AchievementData data) {
+        List<UserAchievement> userAchievements = userAchievementService.addAchievementsForUser(id, data.ids);
+        return ResponseEntity.ok(userAchievements);
+    }
+
+    @Setter
+    public static class AchievementData {
+        private List<Long> ids;
     }
 }
 

@@ -50,6 +50,10 @@ public class UserService {
             existingUser.setCurrentAvatar(user.getCurrentAvatar());
         }
 
+
+        existingUser.setSound(user.isSound());
+        existingUser.setVibration(user.isVibration());
+
         return userRepository.save(existingUser);
     }
 
