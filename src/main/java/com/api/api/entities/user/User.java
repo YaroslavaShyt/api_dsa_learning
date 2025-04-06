@@ -81,6 +81,9 @@ public class User implements Serializable, UserDetails {
     @Column(name = "sound", nullable = false)
     private boolean sound;
 
+    @Column(name = "animations", nullable = false)
+    private boolean animations;
+
     @Column(name = "vibration", nullable = false)
     private boolean vibration;
 
