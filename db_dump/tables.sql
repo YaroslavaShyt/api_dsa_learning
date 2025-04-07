@@ -14,7 +14,14 @@ CREATE TABLE IF NOT EXISTS users
     created_at timestamp DEFAULT CURRENT_TIMESTAMP,
     bytes int NOT NULL DEFAULT 10,
     hash int NOT NULL DEFAULT 10, 
-    fan int NOT NULL DEFAULT 10
+    fan int NOT NULL DEFAULT 10,
+    avatars varchar(255) DEFAULT '',
+    current_avatar varchar(255) DEFAULT 'first',
+    vibration tinyint DEFAULT 1,
+    sound tinyint DEFAULT 1,
+	animations tinyint DEFAULT 1,
+    fans_updated_last datetime
+  
 );
 
 CREATE TABLE IF NOT EXISTS user_achievements (
@@ -171,3 +178,5 @@ CREATE TABLE IF NOT EXISTS game_task_to_game
     FOREIGN KEY (game_id) REFERENCES game (id),
     FOREIGN KEY (game_task_id) REFERENCES game_task (id)
 );
+
+
