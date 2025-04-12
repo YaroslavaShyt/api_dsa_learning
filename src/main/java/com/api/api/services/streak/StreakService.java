@@ -79,5 +79,9 @@ public class StreakService {
         streakRepository.deleteByUserIdAndDateBefore(userId, today.minusDays(7));
     }
 
+
+    public void deleteUserStreak(Long userId) {
+        streakRepository.deleteAllByUserId(userId);
+    }
 }
 

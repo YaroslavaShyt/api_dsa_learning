@@ -67,4 +67,8 @@ public class AchievementsService {
         return userAchievementRepository.saveAll(userAchievements);
     }
 
+    public void deleteUserAchievements(Long userId) {
+        userAchievementRepository.deleteAllByUserId(userId);
+    }
+
 }

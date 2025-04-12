@@ -3,8 +3,10 @@ package com.api.api.repositories.user;
 import com.api.api.controllers.statistics.MonthlyStatisticsDTO;
 import com.api.api.entities.user.UserTraining;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -40,5 +42,9 @@ public interface UserTrainingRepository extends JpaRepository<UserTraining, Long
                                                                  @Param("endDate") LocalDate endDate);
 
 
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM user_trainings WHERE user_id = :userId", nativeQuery = true)
+    void deleteAllByUserId(@Param("userId") Long userId);
 }
 

@@ -18,8 +18,6 @@ public class UserController {
 
     @GetMapping
     public User getUser(@RequestHeader("X-User-Id") long id) {
-//        System.out.println("id");
-//        System.out.println(id);
         return userService.get(id);
     }
 

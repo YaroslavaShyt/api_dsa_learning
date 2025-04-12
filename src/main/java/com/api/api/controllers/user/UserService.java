@@ -2,8 +2,12 @@ package com.api.api.controllers.user;
 
 import com.api.api.entities.user.User;
 import com.api.api.repositories.user.UserRepository;
+import com.api.api.repositories.user.UserTrainingRepository;
+import com.api.api.services.achievements.AchievementsService;
+import com.api.api.services.streak.StreakService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.Duration;
@@ -14,6 +18,15 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserTrainingRepository userTrainingRepository;
+
+    @Autowired
+    AchievementsService achievementsService;
+
+    @Autowired
+    StreakService  streakService;
 
     public User create(User user) {
         return userRepository.save(user);
@@ -74,12 +87,17 @@ public class UserService {
 
         existingUser.setSound(user.isSound());
         existingUser.setVibration(user.isVibration());
+        existingUser.setAnimations(user.isAnimations());
 
         return userRepository.save(existingUser);
     }
 
 
+    @Transactional
     public void delete(Long id) {
+        achievementsService.deleteUserAchievements(id);
+        userTrainingRepository.deleteAllByUserId(id);
+        streakService.deleteUserStreak(id);
         userRepository.deleteById(id);
     }
 }

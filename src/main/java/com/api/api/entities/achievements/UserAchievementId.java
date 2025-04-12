@@ -5,20 +5,21 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import java.io.Serializable;
 
 @Setter
 @Getter
 @Embeddable
+@Entity
 public class UserAchievementId implements Serializable {
 
-    private Long userId;
+    public Long userId;
 
-    private Long achievementId;
+    public Long achievementId;
 
 
-    public UserAchievementId() {
-    }
+    public UserAchievementId() {}
 
     public UserAchievementId(Long userId, Long achievementId) {
         this.userId = userId;
