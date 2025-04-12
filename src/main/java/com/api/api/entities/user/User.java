@@ -73,10 +73,10 @@ public class User implements Serializable, UserDetails {
     private int hash = 10;
 
     @Column(name = "avatars", nullable = false)
-    private String avatars;
+    private String avatars = ",";
 
     @Column(name = "current_avatar", nullable = false)
-    private String currentAvatar;
+    private String currentAvatar = "assets/animations/avatars/avatar_1.json";
 
     @Column(name = "sound", nullable = false)
     private boolean sound;
