@@ -6,12 +6,15 @@ import com.api.api.repositories.user.UserTrainingRepository;
 import com.api.api.services.achievements.AchievementsService;
 import com.api.api.services.streak.StreakService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -38,18 +41,27 @@ public class UserService {
         assert user != null;
         System.out.println("fans updated last " + user.getFansUpdatedLast() );
 
-        long hoursSinceLastUpdate = Duration.between(user.getFansUpdatedLast(), LocalDateTime.now()).toHours();
-        System.out.println("hoursSinceLastUpdate = " + hoursSinceLastUpdate);
-        if(user.getFans() < 5 && hoursSinceLastUpdate > 4.5){
-            int newFans = (int) (user.getFans() + hoursSinceLastUpdate / 4.5);
-            System.out.println(newFans);
-            if(newFans > 5){
-                newFans = 5;
-            }
-            user.setFans(newFans);
+        LocalDateTime fansUpdatedLast = user.getFansUpdatedLast();
+
+        if(fansUpdatedLast == null) {
+            fansUpdatedLast = LocalDateTime.now();
             user.setFansUpdatedLast(LocalDateTime.now());
 
         }
+            long hoursSinceLastUpdate = Duration.between(fansUpdatedLast, LocalDateTime.now()).toHours();
+            System.out.println("hoursSinceLastUpdate = " + hoursSinceLastUpdate);
+            if(user.getFans() < 5 && hoursSinceLastUpdate > 4.5){
+                int newFans = (int) (user.getFans() + hoursSinceLastUpdate / 4.5);
+                System.out.println(newFans);
+                if(newFans > 5){
+                    newFans = 5;
+                }
+                user.setFans(newFans);
+                user.setFansUpdatedLast(LocalDateTime.now());
+
+            }
+
+
         return userRepository.saveAndFlush(user);
     }
 
