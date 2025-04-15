@@ -67,7 +67,7 @@ public class User implements Serializable, UserDetails {
     private int bytes = 10;
 
     @Column(name = "fans", nullable = false)
-    private int fans = 10;
+    private int fans = 5;
 
     @Column(name = "hash", nullable = false)
     private int hash = 10;
@@ -79,13 +79,13 @@ public class User implements Serializable, UserDetails {
     private String currentAvatar = "assets/animations/avatars/avatar_1.json";
 
     @Column(name = "sound", nullable = false)
-    private boolean sound;
+    private boolean sound = true;
 
     @Column(name = "animations", nullable = false)
-    private boolean animations;
+    private boolean animations  = true;
 
     @Column(name = "vibration", nullable = false)
-    private boolean vibration;
+    private boolean vibration = true;
 
     @Column(name = "fans_updated_last", updatable = true)
     private LocalDateTime fansUpdatedLast;
