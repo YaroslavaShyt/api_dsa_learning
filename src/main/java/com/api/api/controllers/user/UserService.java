@@ -100,6 +100,7 @@ public class UserService {
         existingUser.setSound(user.isSound());
         existingUser.setVibration(user.isVibration());
         existingUser.setAnimations(user.isAnimations());
+        existingUser.set_onboarded(user.is_onboarded());
 
         return userRepository.save(existingUser);
     }

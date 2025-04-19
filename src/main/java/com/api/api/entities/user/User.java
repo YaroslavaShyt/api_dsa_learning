@@ -87,6 +87,9 @@ public class User implements Serializable, UserDetails {
     @Column(name = "vibration", nullable = false)
     private boolean vibration = true;
 
+    @Column(name = "is_onboarded", nullable = false)
+    private boolean is_onboarded = false;
+
     @Column(name = "fans_updated_last", updatable = true)
     private LocalDateTime fansUpdatedLast;
 
