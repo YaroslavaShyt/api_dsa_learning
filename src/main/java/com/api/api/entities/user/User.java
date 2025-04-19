@@ -70,7 +70,7 @@ public class User implements Serializable, UserDetails {
     private int fans = 5;
 
     @Column(name = "hash", nullable = false)
-    private int hash = 10;
+    private int hash = 1;
 
     @Column(name = "avatars", nullable = false)
     private String avatars = ",";
