@@ -231,7 +231,6 @@ public class TeacherService {
     private void deleteGameTasksFromGame(Game game) {
         if (game != null) {
             gameTaskToGameRepository.deleteAll(gameTaskToGameRepository.findByGame(game));
-            gameRepository.delete(game);
         }
     }
 
