@@ -22,4 +22,12 @@ public class GameTaskToGame {
     @JoinColumn(name = "game_task_id", nullable = false)
     private GameTask gameTask;
 
+    public GameTaskToGame(Game game, GameTask gameTask) {
+        this.game = game;
+        this.gameTask = gameTask;
+    }
+
+    public GameTaskToGame() {
+
+    }
 }

@@ -16,4 +16,11 @@ public class GameTaskAnswersType {
     @Column(length = 128, nullable = false)
     private String name;
 
+    public GameTaskAnswersType(String gameAnswersType) {
+        this.name = gameAnswersType;
+    }
+
+    public GameTaskAnswersType() {
+
+    }
 }

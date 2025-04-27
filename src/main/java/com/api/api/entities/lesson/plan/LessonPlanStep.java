@@ -20,4 +20,9 @@ public class LessonPlanStep {
 
     @Column(nullable = false)
     private String name;
+
+    public LessonPlanStep(int i, String step1Plan) {
+        this.number = i;
+        this.name = step1Plan;
+    }
 }

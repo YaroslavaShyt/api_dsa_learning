@@ -14,14 +14,14 @@ public class GameTaskDTO {
     private String question;
     private List<String> answerOptions;
     private String correctAnswer;
-    private String gameAnswersType;
+    private Long gameAnswersTypeId;
 
-    public GameTaskDTO(Long taskId, int questionNumber, String question, List<String> answerOptions, String correctAnswer, String gameAnswersType) {
+    public GameTaskDTO(Long taskId, int questionNumber, String question, List<String> answerOptions, String correctAnswer, Long gameAnswersTypeId) {
         this.taskId = taskId;
         this.questionNumber = questionNumber;
         this.question = question;
         this.answerOptions = answerOptions;
         this.correctAnswer = correctAnswer;
-        this.gameAnswersType = gameAnswersType;
+        this.gameAnswersTypeId = gameAnswersTypeId;
     }
 }

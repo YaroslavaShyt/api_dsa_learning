@@ -30,4 +30,11 @@ public class TheoryStep {
     @ManyToOne
     @JoinColumn(name = "plan_step_id", nullable = false)
     private LessonPlanStep plan_step_id;
+
+    public TheoryStep(String theoryStep1, String image, LessonPlan lessonPlan, LessonPlanStep step1) {
+        this.theory_text = theoryStep1;
+        this.theory_image = image;
+        this.plan_id = lessonPlan;
+        this.plan_step_id = step1;
+    }
 }

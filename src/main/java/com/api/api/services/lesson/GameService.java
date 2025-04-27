@@ -55,7 +55,7 @@ public class GameService {
                         gameTask.getQuestion(),
                         answerOptions,
                         correctAnswer,
-                        gameTask.getAnswersType().getName()
+                        gameTask.getAnswersType().getId()
                 );
                 gameTaskDTOs.add(gameTaskDTO);
             }

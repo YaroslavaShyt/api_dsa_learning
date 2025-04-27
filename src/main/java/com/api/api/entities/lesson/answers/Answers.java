@@ -18,4 +18,8 @@ public class Answers {
 
     @Column(nullable = false)
     private String answer;
+
+    public Answers(final String answer) {
+        this.answer = answer;
+    }
 }

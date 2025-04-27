@@ -2,6 +2,7 @@ package com.api.api.entities.lesson.game;
 
 import com.api.api.entities.lesson.answers.AnswerVariants;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import jakarta.persistence.*;
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
 @Table(name = "game_task", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 public class GameTask {
 
@@ -16,7 +18,7 @@ public class GameTask {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "question_number", nullable = false)
     private int questionNumber;
 
     @Column(nullable = false)
