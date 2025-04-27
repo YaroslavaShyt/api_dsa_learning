@@ -219,7 +219,7 @@ public class TeacherService {
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new EntityNotFoundException("Lesson not found"));
 
-//        deleteGameTasksFromGame(lesson.getGame());
+          deleteGameTasksFromGame(lesson.getGame());
 //        deleteTheoryFromLesson(lesson.getTheory());
 //        deleteLessonPlanFromLesson(lesson.getLessonPlan());
 
