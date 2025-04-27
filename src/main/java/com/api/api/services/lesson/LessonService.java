@@ -44,7 +44,8 @@ public class LessonService {
                     lesson.getGame().getId(),
                     topicName,
                     lesson.getTitle(),
-                    lessonPlanSteps
+                    lessonPlanSteps,
+                    lesson.getTopic().getId()
             );
 
             categorizedLessons.get(categoryName).get(topicName).add(summaryDTO);
