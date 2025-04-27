@@ -25,11 +25,11 @@ public class Lesson {
     @JoinColumn(name = "topic_id", nullable = false)
     private Topic topic;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "game_id", nullable = false)
     private Game game;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "theory_id", nullable = false)
     private Theory theory;
 

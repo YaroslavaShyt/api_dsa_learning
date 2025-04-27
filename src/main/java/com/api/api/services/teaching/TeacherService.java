@@ -213,4 +213,37 @@ public class TeacherService {
 
         return game;
     }
+
+    @Transactional
+    public void deleteLesson(Long lessonId) {
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new EntityNotFoundException("Lesson not found"));
+
+//        deleteGameTasksFromGame(lesson.getGame());
+//        deleteTheoryFromLesson(lesson.getTheory());
+//        deleteLessonPlanFromLesson(lesson.getLessonPlan());
+
+        lessonRepository.delete(lesson);
+
+    }
+
+
+    private void deleteGameTasksFromGame(Game game) {
+        if (game != null) {
+            gameTaskToGameRepository.deleteAll(gameTaskToGameRepository.findByGame(game));
+            gameRepository.delete(game);
+        }
+    }
+
+    private void deleteTheoryFromLesson(Theory theory) {
+        if (theory != null) {
+            theoryRepository.delete(theory);
+        }
+    }
+
+    private void deleteLessonPlanFromLesson(LessonPlan lessonPlan) {
+        if (lessonPlan != null) {
+            lessonPlanRepository.delete(lessonPlan);
+        }
+    }
 }

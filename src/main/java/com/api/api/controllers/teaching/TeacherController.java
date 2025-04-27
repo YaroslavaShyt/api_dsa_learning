@@ -20,6 +20,12 @@ public class TeacherController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteLesson(@PathVariable Long id) {
+        teacherService.deleteLesson(id);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/")
     public ResponseEntity<?> createLesson(@RequestBody LessonCreateRequest request) {
         teacherService.createLesson(request);
