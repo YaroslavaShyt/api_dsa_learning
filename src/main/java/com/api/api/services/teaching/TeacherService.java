@@ -2,6 +2,8 @@ package com.api.api.services.teaching;
 
 import com.api.api.controllers.teaching.LessonCreateRequest;
 import com.api.api.controllers.teaching.LessonUpdateRequest;
+import com.api.api.controllers.teaching.TopicRequestDTO;
+import com.api.api.entities.learning_category.LearningCategory;
 import com.api.api.entities.lesson.Lesson;
 import com.api.api.entities.lesson.answers.AnswerVariants;
 import com.api.api.entities.lesson.answers.Answers;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TeacherService {
@@ -54,10 +57,16 @@ public class TeacherService {
 
     @Autowired
     private AnswerVariantsRepository answerVariantsRepository;
+
     @Autowired
     private AnswersRepository answersRepository;
+
     @Autowired
     private GameTaskAnswersTypeRepository gameTaskAnswersTypeRepository;
+
+    @Autowired
+    private LearningCategoryRepository categoryRepository;
+
 
     @Transactional
     public void createLesson(LessonCreateRequest request) {
@@ -220,8 +229,6 @@ public class TeacherService {
                 .orElseThrow(() -> new EntityNotFoundException("Lesson not found"));
 
           deleteGameTasksFromGame(lesson.getGame());
-//        deleteTheoryFromLesson(lesson.getTheory());
-//        deleteLessonPlanFromLesson(lesson.getLessonPlan());
 
         lessonRepository.delete(lesson);
 
@@ -234,15 +241,37 @@ public class TeacherService {
         }
     }
 
-    private void deleteTheoryFromLesson(Theory theory) {
-        if (theory != null) {
-            theoryRepository.delete(theory);
+    public Topic addTopic(TopicRequestDTO requestDTO) {
+        Optional<LearningCategory> categoryOpt = categoryRepository.findById(requestDTO.getCategoryId());
+
+        if (categoryOpt.isEmpty()) {
+            throw new RuntimeException("Category with ID " + requestDTO.getCategoryId() + " not found.");
         }
+
+        Topic topic = new Topic();
+        topic.setTopicName(requestDTO.getTopicName());
+        topic.setCategory(categoryOpt.get());
+
+        return topicRepository.save(topic);
     }
 
-    private void deleteLessonPlanFromLesson(LessonPlan lessonPlan) {
-        if (lessonPlan != null) {
-            lessonPlanRepository.delete(lessonPlan);
-        }
+    public Topic updateTopic(Long id, TopicRequestDTO requestDTO) {
+        Topic topic = topicRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Topic not found with id: " + id));
+
+        LearningCategory category = categoryRepository.findById(requestDTO.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + requestDTO.getCategoryId()));
+
+        topic.setTopicName(requestDTO.getTopicName());
+        topic.setCategory(category);
+
+        return topicRepository.save(topic);
     }
+    public void deleteTopic(Long id) {
+        if (!topicRepository.existsById(id)) {
+            throw new RuntimeException("Topic not found with id: " + id);
+        }
+        topicRepository.deleteById(id);
+    }
+
 }

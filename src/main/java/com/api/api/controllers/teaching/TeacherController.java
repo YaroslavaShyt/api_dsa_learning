@@ -1,6 +1,7 @@
 package com.api.api.controllers.teaching;
 
 
+import com.api.api.entities.topic.Topic;
 import com.api.api.services.teaching.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,5 +33,22 @@ public class TeacherController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @PostMapping("/topic")
+    public ResponseEntity<Topic> createTopic(@RequestBody TopicRequestDTO topicRequest) {
+        Topic createdTopic = teacherService.addTopic(topicRequest);
+        return ResponseEntity.ok(createdTopic);
+    }
+
+    @PutMapping("/topic/{id}")
+    public ResponseEntity<Topic> updateTopic(@PathVariable Long id, @RequestBody TopicRequestDTO topicRequest) {
+        Topic updatedTopic = teacherService.updateTopic(id, topicRequest);
+        return ResponseEntity.ok(updatedTopic);
+    }
+
+    @DeleteMapping("/topic/{id}")
+    public ResponseEntity<Void> deleteTopic(@PathVariable Long id) {
+        teacherService.deleteTopic(id);
+        return ResponseEntity.noContent().build();
+    }
 }
 
