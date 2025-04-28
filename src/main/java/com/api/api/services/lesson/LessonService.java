@@ -38,20 +38,25 @@ public class LessonService {
 
             categorizedLessons.get(categoryName).putIfAbsent(topicName, new ArrayList<>());
 
-            Map<String, String> lessonPlanSteps = lesson.getLessonPlan() != null ? lesson.getLessonPlan().getStepsMap() : new HashMap<>();
-            LessonSummaryDTO summaryDTO = new LessonSummaryDTO(
-                    lesson.getId(),
-                    lesson.getGame().getId(),
-                    topicName,
-                    lesson.getTitle(),
-                    lessonPlanSteps,
-                    lesson.getTopic().getId()
-            );
+            LessonSummaryDTO summaryDTO = getLessonSummaryDTO(lesson, topicName);
 
             categorizedLessons.get(categoryName).get(topicName).add(summaryDTO);
         }
 
         return categorizedLessons;
+    }
+
+    private static LessonSummaryDTO getLessonSummaryDTO(Lesson lesson, String topicName) {
+        Map<String, String> lessonPlanSteps = lesson.getLessonPlan() != null ? lesson.getLessonPlan().getStepsMap() : new HashMap<>();
+        return new LessonSummaryDTO(
+                lesson.getId(),
+                lesson.getGame().getId(),
+                topicName,
+                lesson.getTitle(),
+                lessonPlanSteps,
+                lesson.getTopic().getId(),
+                lesson.getTopic().getCategory().getId()
+        );
     }
 
     public Optional<LessonDetailsDTO> getLessonDetailsById(Long lessonId) {
