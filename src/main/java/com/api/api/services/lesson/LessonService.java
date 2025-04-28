@@ -1,21 +1,55 @@
 package com.api.api.services.lesson;
 
+import com.api.api.entities.learning_category.LearningCategory;
+import com.api.api.entities.lesson.CategoryWithTopicsDTO;
 import com.api.api.entities.lesson.Lesson;
 import com.api.api.entities.lesson.LessonDetailsDTO;
 import com.api.api.entities.lesson.LessonSummaryDTO;
 import com.api.api.entities.lesson.plan.LessonPlan;
 import com.api.api.entities.lesson.theory.Theory;
+import com.api.api.entities.topic.Topic;
+import com.api.api.repositories.lesson.LearningCategoryRepository;
 import com.api.api.repositories.lesson.LessonRepository;
+import com.api.api.repositories.lesson.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class LessonService {
 
     @Autowired
     private LessonRepository lessonRepository;
+
+    @Autowired
+    private TopicRepository topicRepository;
+
+    public List<CategoryWithTopicsDTO> getTopicsGroupedByCategory() {
+        List<Topic> topics = topicRepository.findAll();
+
+        Map<Long, List<Topic>> grouped = topics.stream()
+                .collect(Collectors.groupingBy(t -> t.getCategory().getId()));
+
+        return grouped.entrySet().stream().map(entry -> {
+            Topic sample = entry.getValue().get(0);
+
+            CategoryWithTopicsDTO dto = new CategoryWithTopicsDTO();
+            dto.setCategoryId(sample.getCategory().getId());
+            dto.setCategoryName(sample.getCategory().getName());
+
+            List<CategoryWithTopicsDTO.TopicDTO> topicDTOs = entry.getValue().stream().map(topic -> {
+                CategoryWithTopicsDTO.TopicDTO t = new CategoryWithTopicsDTO.TopicDTO();
+                t.setId(topic.getId());
+                t.setTopicName(topic.getTopicName());
+                return t;
+            }).collect(Collectors.toList());
+
+            dto.setTopics(topicDTOs);
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
     public List<Lesson> getAllLessons() {
         return lessonRepository.findAll();

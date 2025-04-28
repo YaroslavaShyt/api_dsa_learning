@@ -1,5 +1,6 @@
 package com.api.api.controllers.lesson;
 
+import com.api.api.entities.lesson.CategoryWithTopicsDTO;
 import com.api.api.entities.lesson.Lesson;
 import com.api.api.entities.lesson.LessonDetailsDTO;
 import com.api.api.entities.lesson.LessonSummaryDTO;
@@ -41,6 +42,11 @@ public class LessonController {
     public ResponseEntity<Map<String, Map<String, List<LessonSummaryDTO>>>> getLessonsByCategory() {
         Map<String, Map<String, List<LessonSummaryDTO>>> categorizedLessons = lessonService.getLessonsSummaries();
         return ResponseEntity.ok(categorizedLessons);
+    }
+
+    @GetMapping("/topics")
+    public ResponseEntity<List<CategoryWithTopicsDTO>> getTopicsGroupedByCategory() {
+        return ResponseEntity.ok(lessonService.getTopicsGroupedByCategory());
     }
 
     @GetMapping("/{id}/details")
