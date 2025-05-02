@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,10 @@ public class UserService {
 
     @Autowired
     StreakService  streakService;
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
     public User create(User user) {
         return userRepository.save(user);

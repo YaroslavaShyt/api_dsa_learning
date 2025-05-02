@@ -4,6 +4,8 @@ import com.api.api.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -19,6 +21,11 @@ public class UserController {
     @GetMapping
     public User getUser(@RequestHeader("X-User-Id") long id) {
         return userService.get(id);
+    }
+
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @PutMapping
