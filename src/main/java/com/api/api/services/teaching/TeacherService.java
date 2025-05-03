@@ -149,7 +149,12 @@ public class TeacherService {
 
         Game game = buildGameFromUpdateRequest(request);
         lesson.setGame(game);
+
+        gameTaskToGameRepository.deleteAll(gameTaskToGameRepository.findByGame(game));
+
+        saveGameTasks(game, request.getGameTasks());
     }
+
 
     private LessonPlan buildLessonPlanFromCreateRequest(LessonCreateRequest request) {
         return buildLessonPlanFromRequest(request.getStep1Plan(), request.getStep2Plan(), request.getStep3Plan(), request.getStep4Plan());
