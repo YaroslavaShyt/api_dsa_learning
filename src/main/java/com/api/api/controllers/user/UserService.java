@@ -1,6 +1,8 @@
 package com.api.api.controllers.user;
 
+import com.api.api.entities.user.Admin;
 import com.api.api.entities.user.User;
+import com.api.api.repositories.user.AdminRepository;
 import com.api.api.repositories.user.UserRepository;
 import com.api.api.repositories.user.UserTrainingRepository;
 import com.api.api.services.achievements.AchievementsService;
@@ -24,6 +26,9 @@ public class UserService {
     UserRepository userRepository;
 
     @Autowired
+    AdminRepository adminRepository;
+
+    @Autowired
     UserTrainingRepository userTrainingRepository;
 
     @Autowired
@@ -31,6 +36,14 @@ public class UserService {
 
     @Autowired
     StreakService  streakService;
+
+    public Admin getAdmin(Long id) {
+        Admin admin = adminRepository.findById(id).orElse(null);
+
+        assert admin != null;
+
+        return admin;
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();

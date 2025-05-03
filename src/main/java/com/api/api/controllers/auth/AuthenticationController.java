@@ -1,5 +1,7 @@
 package com.api.api.controllers.auth;
 
+import com.api.api.entities.user.Admin;
+import com.api.api.repositories.user.AdminRepository;
 import com.api.api.services.auth.JwtService;
 import com.api.api.entities.user.User;
 import com.api.api.repositories.user.UserRepository;
@@ -29,6 +31,9 @@ public class AuthenticationController {
 
     @Autowired
     JwtService jwtService;
+
+    @Autowired
+    AdminRepository adminRepository;
 
     @PostMapping("/signup")
     public Object registerUser(@RequestBody User user) {
@@ -64,6 +69,49 @@ public class AuthenticationController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         User authenticatedUser = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String generatedToken = jwtService.generateToken(userDetails.getUsername());
+
+        return new Object() {
+            public String token = generatedToken;
+            public Long userId = authenticatedUser.getId();
+        };
+    }
+
+    @PostMapping("/signup/admin")
+    public Object registerAdmin(@RequestBody Admin admin) {
+        if (adminRepository.existsByUsername(admin.getUsername())) {
+            return "Error: Username is already taken!";
+        }
+
+        Admin newAdmin = new Admin(
+                admin.getFirstName(),
+                admin.getUsername(),
+                passwordEncoder.encode(admin.getPassword())
+        );
+        adminRepository.save(newAdmin);
+
+        String generatedToken = jwtService.generateToken(newAdmin.getUsername());
+
+        return new Object() {
+            public String token = generatedToken;
+            public Long userId = newAdmin.getId();
+        };
+    }
+
+    @PostMapping("/signin/admin")
+    public Object authenticateUser(@RequestBody Admin admin) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        admin.getUsername(),
+                        admin.getPassword()
+                )
+        );
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        Admin authenticatedUser = (Admin) adminRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String generatedToken = jwtService.generateToken(userDetails.getUsername());

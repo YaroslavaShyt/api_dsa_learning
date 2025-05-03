@@ -1,5 +1,6 @@
 package com.api.api.controllers.user;
 
+import com.api.api.entities.user.Admin;
 import com.api.api.entities.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,11 @@ public class UserController {
     @GetMapping
     public User getUser(@RequestHeader("X-User-Id") long id) {
         return userService.get(id);
+    }
+
+    @GetMapping("/admin")
+    public Admin getAdmin(@RequestHeader("X-User-Id") long id) {
+        return userService.getAdmin(id);
     }
 
     @GetMapping("/all")
