@@ -1,6 +1,7 @@
 package com.api.api.repositories.user;
 
 import com.api.api.controllers.statistics.MonthlyStatisticsDTO;
+import com.api.api.controllers.statistics.UserLearnedLessonsDTO;
 import com.api.api.entities.user.UserTraining;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -46,5 +47,13 @@ public interface UserTrainingRepository extends JpaRepository<UserTraining, Long
     @Transactional
     @Query(value = "DELETE FROM user_trainings WHERE user_id = :userId", nativeQuery = true)
     void deleteAllByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT new com.api.api.controllers.statistics.UserLearnedLessonsDTO(" +
+            "t.title, ut.date, ut.time) " +
+            "FROM UserTraining ut " +
+            "JOIN ut.training t " +
+            "WHERE ut.userId = :userId")
+    List<UserLearnedLessonsDTO> findUserLearnedLessonsByUserId(@Param("userId") Long userId);
+
 }
 

@@ -1,6 +1,7 @@
 package com.api.api.services.statistics;
 
 import com.api.api.controllers.statistics.MonthlyStatisticsDTO;
+import com.api.api.controllers.statistics.UserLearnedLessonsDTO;
 import com.api.api.repositories.user.UserTrainingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,7 @@ public class StatisticsService {
         return result;
     }
 
-
+    public List<UserLearnedLessonsDTO> getUserLearnedLessons(Long userId) {
+        return userTrainingRepository.findUserLearnedLessonsByUserId(userId);
+    }
 }
