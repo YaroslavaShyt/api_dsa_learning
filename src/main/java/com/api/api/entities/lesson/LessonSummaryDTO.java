@@ -1,7 +1,6 @@
 package com.api.api.entities.lesson;
 
 
-import com.api.api.entities.lesson.plan.LessonPlan;
 import lombok.Getter;
 import lombok.Setter;
 

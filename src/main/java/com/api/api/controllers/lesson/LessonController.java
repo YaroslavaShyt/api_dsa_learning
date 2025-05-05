@@ -4,11 +4,10 @@ import com.api.api.entities.lesson.CategoryWithTopicsDTO;
 import com.api.api.entities.lesson.Lesson;
 import com.api.api.entities.lesson.LessonDetailsDTO;
 import com.api.api.entities.lesson.LessonSummaryDTO;
-import com.api.api.entities.lesson.game.Game;
 import com.api.api.entities.lesson.game.GameDetailsDTO;
 import com.api.api.services.lesson.GameService;
 import com.api.api.services.lesson.LessonService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +17,12 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/lessons")
 public class LessonController {
 
-    @Autowired
-    private LessonService lessonService;
-
-    @Autowired
-    private GameService gameService;
+    private final LessonService lessonService;
+    private final GameService gameService;
 
     @GetMapping
     public List<Lesson> getAllLessons() {
@@ -52,14 +49,12 @@ public class LessonController {
     @GetMapping("/{id}/details")
     public ResponseEntity<LessonDetailsDTO> getLessonDetails(@PathVariable("id") Long lessonId) {
         Optional<LessonDetailsDTO> lessonDetails = lessonService.getLessonDetailsById(lessonId);
-
         return lessonDetails.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
     @GetMapping("/{id}/game")
-    public ResponseEntity<GameDetailsDTO>  getLessonGame(@PathVariable("id") Long gameId) {
+    public ResponseEntity<GameDetailsDTO> getLessonGame(@PathVariable("id") Long gameId) {
         Optional<GameDetailsDTO> gameDetails = gameService.getGameDetailsById(gameId);
-
         return gameDetails.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 }

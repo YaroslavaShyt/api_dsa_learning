@@ -5,7 +5,9 @@ import com.api.api.repositories.user.AdminRepository;
 import com.api.api.services.auth.JwtService;
 import com.api.api.entities.user.User;
 import com.api.api.repositories.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,24 +18,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RequestMapping("/api/auth")
 @RestController
 public class AuthenticationController {
-
-    @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JwtService jwtService;
-
-    @Autowired
-    AdminRepository adminRepository;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AdminRepository adminRepository;
 
     @PostMapping("/signup")
     public Object registerUser(@RequestBody User user) {
@@ -51,10 +44,7 @@ public class AuthenticationController {
 
         String generatedToken = jwtService.generateToken(newUser.getUsername());
 
-        return new Object() {
-            public String token = generatedToken;
-            public Long userId = newUser.getId();
-        };
+        return new AuthResult(generatedToken, newUser.getId());
     }
 
     @PostMapping("/signin")
@@ -73,10 +63,7 @@ public class AuthenticationController {
 
         String generatedToken = jwtService.generateToken(userDetails.getUsername());
 
-        return new Object() {
-            public String token = generatedToken;
-            public Long userId = authenticatedUser.getId();
-        };
+        return new AuthResult(generatedToken, authenticatedUser.getId());
     }
 
     @PostMapping("/signup/admin")
@@ -94,10 +81,7 @@ public class AuthenticationController {
 
         String generatedToken = jwtService.generateToken(newAdmin.getUsername());
 
-        return new Object() {
-            public String token = generatedToken;
-            public Long userId = newAdmin.getId();
-        };
+        return new AuthResult(generatedToken, newAdmin.getId());
     }
 
     @PostMapping("/signin/admin")
@@ -111,15 +95,24 @@ public class AuthenticationController {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        Admin authenticatedUser = (Admin) adminRepository.findByUsername(userDetails.getUsername())
+        Admin authenticatedUser = adminRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String generatedToken = jwtService.generateToken(userDetails.getUsername());
 
-        return new Object() {
-            public String token = generatedToken;
-            public Long userId = authenticatedUser.getId();
-        };
+        return new AuthResult(generatedToken, authenticatedUser.getId());
+    }
+
+    @Getter
+    @Setter
+    public static class AuthResult {
+        private String token;
+        private Long userId;
+
+        public AuthResult(String generatedToken, Long id) {
+            this.token = generatedToken;
+            this.userId = id;
+        }
     }
 
 }

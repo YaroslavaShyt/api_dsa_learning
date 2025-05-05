@@ -5,23 +5,20 @@ import com.api.api.entities.achievements.Achievement;
 import com.api.api.entities.achievements.UserAchievement;
 import com.api.api.entities.achievements.UserAchievementsDTO;
 import com.api.api.services.achievements.AchievementsService;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/achievements")
 public class AchievementsController {
 
     private final AchievementsService userAchievementService;
 
-    @Autowired
-    public AchievementsController(AchievementsService userAchievementService) {
-        this.userAchievementService = userAchievementService;
-    }
 
     @GetMapping("/")
     public List<Achievement> getAllAchievements() {

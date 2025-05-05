@@ -10,6 +10,5 @@ import java.util.List;
 
 @Repository
 public interface GameTaskToGameRepository extends JpaRepository<GameTaskToGame, Long> {
-    // Custom query to get tasks by game
     List<GameTaskToGame> findByGame(Game game);
 }

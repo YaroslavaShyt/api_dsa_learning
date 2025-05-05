@@ -3,7 +3,7 @@ package com.api.api.services.statistics;
 import com.api.api.controllers.statistics.MonthlyStatisticsDTO;
 import com.api.api.controllers.statistics.UserLearnedLessonsDTO;
 import com.api.api.repositories.user.UserTrainingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 
+@RequiredArgsConstructor
 @Service
 public class StatisticsService {
 
-    @Autowired
-    private UserTrainingRepository userTrainingRepository;
+    private final UserTrainingRepository userTrainingRepository;
 
     public Map<Integer, Map<String, Integer>> getLastThreeMonthsStatistics(Long userId) {
         String algorithms = "ALGORITHMS";

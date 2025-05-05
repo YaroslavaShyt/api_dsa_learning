@@ -4,20 +4,19 @@ import com.api.api.entities.user.Admin;
 import com.api.api.entities.user.User;
 import com.api.api.repositories.user.AdminRepository;
 import com.api.api.repositories.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
+
 import java.util.Collections;
 import java.util.Optional;
 
 @Service
-public class CustomUserDetailsService  implements UserDetailsService {
+@RequiredArgsConstructor
+public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private AdminRepository adminRepository;
+    private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

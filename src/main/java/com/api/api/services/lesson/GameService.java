@@ -3,30 +3,20 @@ package com.api.api.services.lesson;
 import com.api.api.entities.lesson.answers.AnswerVariants;
 import com.api.api.entities.lesson.game.*;
 import com.api.api.repositories.lesson.game.GameRepository;
-import com.api.api.repositories.lesson.game.GameTaskRepository;
 import com.api.api.repositories.lesson.game.GameTaskToGameRepository;
-import com.api.api.repositories.lesson.game.answers.AnswerVariantsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class GameService {
 
-    @Autowired
-    private GameRepository gameRepository;
-
-    @Autowired
-    private GameTaskRepository gameTaskRepository;
-
-    @Autowired
-    private GameTaskToGameRepository gameTaskToGameRepository;
-
-    @Autowired
-    private AnswerVariantsRepository answerVariantsRepository;
+    private final GameRepository gameRepository;
+    private final GameTaskToGameRepository gameTaskToGameRepository;
 
     public Optional<GameDetailsDTO> getGameDetailsById(Long gameId) {
         Optional<Game> gameOptional = gameRepository.findById(gameId);
@@ -38,25 +28,7 @@ public class GameService {
             List<GameTaskDTO> gameTaskDTOs = new ArrayList<>();
 
             for (GameTaskToGame taskToGame : gameTaskToGames) {
-                GameTask gameTask = taskToGame.getGameTask();
-                List<String> answerOptions = new ArrayList<>();
-
-                AnswerVariants answerVariants = gameTask.getAnswers();
-                answerOptions.add(answerVariants.getFirstAnswer().getAnswer());
-                answerOptions.add(answerVariants.getSecondAnswer().getAnswer());
-                answerOptions.add(answerVariants.getThirdAnswer().getAnswer());
-                answerOptions.add(answerVariants.getFourthAnswer().getAnswer());
-
-                String correctAnswer = answerVariants.getCorrectAnswer().getAnswer();
-
-                GameTaskDTO gameTaskDTO = new GameTaskDTO(
-                        gameTask.getId(),
-                        gameTask.getQuestionNumber(),
-                        gameTask.getQuestion(),
-                        answerOptions,
-                        correctAnswer,
-                        gameTask.getAnswersType().getId()
-                );
+                GameTaskDTO gameTaskDTO = getGameTaskDTO(taskToGame);
                 gameTaskDTOs.add(gameTaskDTO);
             }
 
@@ -71,5 +43,27 @@ public class GameService {
         }
 
         return Optional.empty();
+    }
+
+    private static GameTaskDTO getGameTaskDTO(GameTaskToGame taskToGame) {
+        GameTask gameTask = taskToGame.getGameTask();
+        List<String> answerOptions = new ArrayList<>();
+
+        AnswerVariants answerVariants = gameTask.getAnswers();
+        answerOptions.add(answerVariants.getFirstAnswer().getAnswer());
+        answerOptions.add(answerVariants.getSecondAnswer().getAnswer());
+        answerOptions.add(answerVariants.getThirdAnswer().getAnswer());
+        answerOptions.add(answerVariants.getFourthAnswer().getAnswer());
+
+        String correctAnswer = answerVariants.getCorrectAnswer().getAnswer();
+
+        return new GameTaskDTO(
+                gameTask.getId(),
+                gameTask.getQuestionNumber(),
+                gameTask.getQuestion(),
+                answerOptions,
+                correctAnswer,
+                gameTask.getAnswersType().getId()
+        );
     }
 }

@@ -1,6 +1,5 @@
 package com.api.api.services.lesson;
 
-import com.api.api.entities.learning_category.LearningCategory;
 import com.api.api.entities.lesson.CategoryWithTopicsDTO;
 import com.api.api.entities.lesson.Lesson;
 import com.api.api.entities.lesson.LessonDetailsDTO;
@@ -8,23 +7,20 @@ import com.api.api.entities.lesson.LessonSummaryDTO;
 import com.api.api.entities.lesson.plan.LessonPlan;
 import com.api.api.entities.lesson.theory.Theory;
 import com.api.api.entities.topic.Topic;
-import com.api.api.repositories.lesson.LearningCategoryRepository;
 import com.api.api.repositories.lesson.LessonRepository;
 import com.api.api.repositories.lesson.TopicRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class LessonService {
 
-    @Autowired
-    private LessonRepository lessonRepository;
-
-    @Autowired
-    private TopicRepository topicRepository;
+    private final LessonRepository lessonRepository;
+    private final TopicRepository topicRepository;
 
     public List<CategoryWithTopicsDTO> getTopicsGroupedByCategory() {
         List<Topic> topics = topicRepository.findAll();
@@ -32,14 +28,14 @@ public class LessonService {
         Map<Long, List<Topic>> grouped = topics.stream()
                 .collect(Collectors.groupingBy(t -> t.getCategory().getId()));
 
-        return grouped.entrySet().stream().map(entry -> {
-            Topic sample = entry.getValue().get(0);
+        return grouped.values().stream().map(topicList -> {
+            Topic sample = topicList.get(0);
 
             CategoryWithTopicsDTO dto = new CategoryWithTopicsDTO();
             dto.setCategoryId(sample.getCategory().getId());
             dto.setCategoryName(sample.getCategory().getName());
 
-            List<CategoryWithTopicsDTO.TopicDTO> topicDTOs = entry.getValue().stream().map(topic -> {
+            List<CategoryWithTopicsDTO.TopicDTO> topicDTOs = topicList.stream().map(topic -> {
                 CategoryWithTopicsDTO.TopicDTO t = new CategoryWithTopicsDTO.TopicDTO();
                 t.setId(topic.getId());
                 t.setTopicName(topic.getTopicName());

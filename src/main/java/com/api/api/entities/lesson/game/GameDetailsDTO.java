@@ -20,6 +20,4 @@ public class GameDetailsDTO {
         this.timeLimit = timeLimit;
         this.gameTasks = gameTasks;
     }
-
-
 }

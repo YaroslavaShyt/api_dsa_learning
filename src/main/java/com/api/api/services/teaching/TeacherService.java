@@ -17,7 +17,7 @@ import com.api.api.repositories.lesson.TopicRepository;
 import com.api.api.repositories.lesson.*;
 import com.api.api.repositories.lesson.game.*;
 import com.api.api.repositories.lesson.game.answers.AnswerVariantsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,47 +25,23 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class TeacherService {
 
-    @Autowired
-    private LessonRepository lessonRepository;
-
-    @Autowired
-    private LessonPlanStepRepository lessonPlanStepRepository;
-
-    @Autowired
-    private LessonPlanRepository lessonPlanRepository;
-
-    @Autowired
-    private TheoryStepRepository theoryStepRepository;
-
-    @Autowired
-    private TheoryRepository theoryRepository;
-
-    @Autowired
-    private GameRepository gameRepository;
-
-    @Autowired
-    private GameTaskRepository gameTaskRepository;
-
-    @Autowired
-    private GameTaskToGameRepository gameTaskToGameRepository;
-
-    @Autowired
-    private TopicRepository topicRepository;
-
-    @Autowired
-    private AnswerVariantsRepository answerVariantsRepository;
-
-    @Autowired
-    private AnswersRepository answersRepository;
-
-    @Autowired
-    private GameTaskAnswersTypeRepository gameTaskAnswersTypeRepository;
-
-    @Autowired
-    private LearningCategoryRepository categoryRepository;
+    private final LessonRepository lessonRepository;
+    private final LessonPlanStepRepository lessonPlanStepRepository;
+    private final LessonPlanRepository lessonPlanRepository;
+    private final TheoryStepRepository theoryStepRepository;
+    private final TheoryRepository theoryRepository;
+    private final GameRepository gameRepository;
+    private final GameTaskRepository gameTaskRepository;
+    private final GameTaskToGameRepository gameTaskToGameRepository;
+    private final TopicRepository topicRepository;
+    private final AnswerVariantsRepository answerVariantsRepository;
+    private final AnswersRepository answersRepository;
+    private final GameTaskAnswersTypeRepository gameTaskAnswersTypeRepository;
+    private final  LearningCategoryRepository categoryRepository;
 
 
     @Transactional

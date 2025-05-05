@@ -38,12 +38,4 @@ public class Streak {
     public enum StreakStatus {
         LEARNED, FROZEN, NOT_LEARNED
     }
-
-    public Streak(Long userId, LocalDate date, StreakStatus status) {
-        this.user = new User();
-        this.user.setId(userId);
-        this.date = date;
-        this.status = status;
-    }
-
 }

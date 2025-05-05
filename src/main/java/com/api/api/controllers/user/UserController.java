@@ -2,17 +2,17 @@ package com.api.api.controllers.user;
 
 import com.api.api.entities.user.Admin;
 import com.api.api.entities.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping
     public User createUser(@RequestBody User user) {

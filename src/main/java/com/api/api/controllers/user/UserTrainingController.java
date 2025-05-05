@@ -1,23 +1,20 @@
 package com.api.api.controllers.user;
 
-import com.api.api.entities.streak.Streak;
 import com.api.api.entities.user.UserTraining;
 import com.api.api.repositories.user.UserTrainingRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 import java.util.*;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/trainings")
 public class UserTrainingController {
 
-    @Autowired
-    private UserTrainingRepository userTrainingRepository;
+    private final UserTrainingRepository userTrainingRepository;
 
     @GetMapping("/user")
     public ResponseEntity<Map<String, List<Long>>> getUserTrainings(@RequestHeader("X-User-Id") Long userId) {

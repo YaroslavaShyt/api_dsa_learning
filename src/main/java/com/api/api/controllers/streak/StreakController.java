@@ -2,8 +2,8 @@ package com.api.api.controllers.streak;
 
 import com.api.api.entities.streak.Streak;
 import com.api.api.services.streak.StreakService;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,11 +11,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/streak")
 public class StreakController {
 
-    @Autowired
-    private StreakService streakService;
+    private final StreakService streakService;
 
     @GetMapping("/")
     public List<StreakDTO> getStreak(@RequestHeader("X-User-Id") long id) {

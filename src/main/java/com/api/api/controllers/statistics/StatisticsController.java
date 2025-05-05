@@ -1,18 +1,17 @@
 package com.api.api.controllers.statistics;
 
 import com.api.api.services.statistics.StatisticsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/statistics")
 public class StatisticsController {
-
-    @Autowired
-    private StatisticsService statisticsService;
+    private final StatisticsService statisticsService;
 
     @GetMapping("/")
     public Map<Integer, Map<String, Integer>> getStatistics(@RequestHeader("X-User-Id") Long userId) {

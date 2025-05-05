@@ -1,7 +1,6 @@
 package com.api.api.controllers.statistics;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class UserLearnedLessonsDTO {
     UserLearnedLessonsDTO(String lessonName, LocalDate date, int timeSpent) {

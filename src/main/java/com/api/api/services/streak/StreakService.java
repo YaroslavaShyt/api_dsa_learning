@@ -5,7 +5,7 @@ import com.api.api.entities.streak.Streak;
 import com.api.api.entities.user.User;
 import com.api.api.repositories.streak.StreakRepository;
 import com.api.api.repositories.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,14 +15,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@RequiredArgsConstructor
 @Service
 public class StreakService {
 
-    @Autowired
-    private StreakRepository streakRepository;
+    private final StreakRepository streakRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public List<StreakDTO> getStreakForUser(Long userId) {
         LocalDate today = LocalDate.now();
@@ -47,7 +46,7 @@ public class StreakService {
     }
 
     public void updateStreakForUser(Long userId, Streak.StreakStatus status, LocalDate date) {
-        LocalDate targetDate = (date != null) ? date : LocalDate.now(); // Використання переданої дати або поточної
+        LocalDate targetDate = (date != null) ? date : LocalDate.now();
 
         Optional<User> optionalUser = userRepository.findById(userId);
 
@@ -59,26 +58,17 @@ public class StreakService {
 
         Optional<Streak> existingStreak = streakRepository.findByUserIdAndDate(userId, targetDate);
 
+        Streak streak;
         if (existingStreak.isPresent()) {
-            Streak streak = existingStreak.get();
-            streak.setStatus(status);
-            streakRepository.save(streak);
+            streak = existingStreak.get();
         } else {
-            Streak streak = new Streak();
+            streak = new Streak();
             streak.setUser(user);
             streak.setDate(targetDate);
-            streak.setStatus(status);
-            streakRepository.save(streak);
         }
+        streak.setStatus(status);
+        streakRepository.save(streak);
     }
-
-
-
-    public void cleanupOldStreaks(Long userId) {
-        LocalDate today = LocalDate.now();
-        streakRepository.deleteByUserIdAndDateBefore(userId, today.minusDays(7));
-    }
-
 
     public void deleteUserStreak(Long userId) {
         streakRepository.deleteAllByUserId(userId);
