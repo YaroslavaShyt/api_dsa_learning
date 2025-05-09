@@ -4,12 +4,14 @@ package com.api.api.controllers.teaching;
 import com.api.api.entities.lesson.game.GameTaskDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Getter
 @Setter
 public class LessonUpdateRequest {
+    private Long theoryId;
     private String lessonTitle;
 
     private String step1Plan;
@@ -21,6 +23,10 @@ public class LessonUpdateRequest {
     private String theoryStep2;
     private String theoryStep3;
     private String theoryStep4;
+    private MultipartFile theoryImageStep1;
+    private MultipartFile theoryImageStep2;
+    private MultipartFile theoryImageStep3;
+    private MultipartFile theoryImageStep4;
 
     private Long gameId;
     private String gameName;

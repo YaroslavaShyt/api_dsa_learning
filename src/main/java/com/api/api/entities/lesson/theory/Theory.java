@@ -2,14 +2,17 @@ package com.api.api.entities.lesson.theory;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Setter
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "theory", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 public class Theory {
     @Id

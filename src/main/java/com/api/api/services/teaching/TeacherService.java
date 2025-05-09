@@ -20,8 +20,14 @@ import com.api.api.repositories.lesson.game.answers.AnswerVariantsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +75,11 @@ public class TeacherService {
         LessonPlan lessonPlan = buildLessonPlanFromCreateRequest(request);
         lesson.setLessonPlan(lessonPlan);
 
-        Theory theory = buildTheoryFromCreateRequest(request, lessonPlan);
+        Theory theory = buildTheoryFromRequest(
+                request.getTheoryStep1(), request.getTheoryStep2(), request.getTheoryStep3(), request.getTheoryStep4(),
+                request.getTheoryImageStep1(), request.getTheoryImageStep2(), request.getTheoryImageStep3(), request.getTheoryImageStep4(),
+                lessonPlan
+        );
         lesson.setTheory(theory);
 
         Game game = buildGameFromCreateRequest(request);
@@ -77,6 +87,7 @@ public class TeacherService {
 
         saveGameTasks(game, request.getGameTasks());
     }
+
 
     private void saveGameTasks(Game game, List<GameTaskDTO> gameTasks) {
         for (int i = 0; i < gameTasks.size(); i++) {
@@ -158,19 +169,19 @@ public class TeacherService {
         return plan;
     }
 
-    private Theory buildTheoryFromCreateRequest(LessonCreateRequest request, LessonPlan plan) {
-        return buildTheoryFromRequest(request.getTheoryStep1(), request.getTheoryStep2(), request.getTheoryStep3(), request.getTheoryStep4(), plan);
-    }
 
     private Theory buildTheoryFromUpdateRequest(LessonUpdateRequest request, LessonPlan plan) {
-        return buildTheoryFromRequest(request.getTheoryStep1(), request.getTheoryStep2(), request.getTheoryStep3(), request.getTheoryStep4(), plan);
-    }
+        Theory oldTheory = theoryRepository.findById(request.getTheoryId()).orElseThrow(() -> new EntityNotFoundException("Theory not found"));
 
-    private Theory buildTheoryFromRequest(String theoryStep1, String theoryStep2, String theoryStep3, String theoryStep4, LessonPlan plan) {
-        TheoryStep t1 = new TheoryStep(theoryStep1, "img1.png", plan, plan.getStep1_id());
-        TheoryStep t2 = new TheoryStep(theoryStep2, "img2.png", plan, plan.getStep2_id());
-        TheoryStep t3 = new TheoryStep(theoryStep3, "img3.png", plan, plan.getStep3_id());
-        TheoryStep t4 = new TheoryStep(theoryStep4, "img4.png", plan, plan.getStep4_id());
+        String imagePath1 = replaceImage(oldTheory.getStep1().getTheory_image(), request.getTheoryImageStep1());
+        String imagePath2 = replaceImage(oldTheory.getStep2().getTheory_image(), request.getTheoryImageStep2());
+        String imagePath3 = replaceImage(oldTheory.getStep3().getTheory_image(), request.getTheoryImageStep3());
+        String imagePath4 = replaceImage(oldTheory.getStep4().getTheory_image(), request.getTheoryImageStep4());
+
+        TheoryStep t1 = new TheoryStep(request.getTheoryStep1(), imagePath1, plan, plan.getStep1_id());
+        TheoryStep t2 = new TheoryStep(request.getTheoryStep2(), imagePath2, plan, plan.getStep2_id());
+        TheoryStep t3 = new TheoryStep(request.getTheoryStep3(), imagePath3, plan, plan.getStep3_id());
+        TheoryStep t4 = new TheoryStep(request.getTheoryStep4(), imagePath4, plan, plan.getStep4_id());
 
         theoryStepRepository.saveAll(List.of(t1, t2, t3, t4));
 
@@ -183,6 +194,71 @@ public class TeacherService {
 
         return theory;
     }
+
+    private String replaceImage(String oldImagePath, MultipartFile newFile) {
+        if (newFile != null && !newFile.isEmpty()) {
+            deleteTheoryImage(oldImagePath);
+            return saveTheoryImage(newFile);
+        }
+        return oldImagePath;
+    }
+
+    private Theory buildTheoryFromRequest(
+            String theoryStep1, String theoryStep2, String theoryStep3, String theoryStep4,
+            MultipartFile img1, MultipartFile img2, MultipartFile img3, MultipartFile img4,
+            LessonPlan plan
+    ) {
+        String imagePath1 = saveTheoryImage(img1);
+        String imagePath2 = saveTheoryImage(img2);
+        String imagePath3 = saveTheoryImage(img3);
+        String imagePath4 = saveTheoryImage(img4);
+
+        TheoryStep t1 = new TheoryStep(theoryStep1, imagePath1, plan, plan.getStep1_id());
+        TheoryStep t2 = new TheoryStep(theoryStep2, imagePath2, plan, plan.getStep2_id());
+        TheoryStep t3 = new TheoryStep(theoryStep3, imagePath3, plan, plan.getStep3_id());
+        TheoryStep t4 = new TheoryStep(theoryStep4, imagePath4, plan, plan.getStep4_id());
+
+        theoryStepRepository.saveAll(List.of(t1, t2, t3, t4));
+
+        Theory theory = new Theory();
+        theory.setStep1(t1);
+        theory.setStep2(t2);
+        theory.setStep3(t3);
+        theory.setStep4(t4);
+        theoryRepository.save(theory);
+
+        return theory;
+    }
+
+    private String saveTheoryImage(MultipartFile file) {
+        if (file == null || file.isEmpty()) return null;
+
+        try {
+            String uploadDir = "uploads/theory/";
+            Files.createDirectories(Paths.get(uploadDir));
+
+            String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            Path filePath = Paths.get(uploadDir, filename);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            return "/files/theory/" + filename;
+        } catch (IOException e) {
+            throw new RuntimeException("Не вдалося зберегти файл", e);
+        }
+    }
+
+    private void deleteTheoryImage(String imagePath) {
+        if (imagePath != null) {
+            Path path = Paths.get("uploads", imagePath.replace("/files/", ""));
+            try {
+                Files.deleteIfExists(path);
+            } catch (IOException e) {
+                System.err.println("Не вдалося видалити файл: " + path);
+            }
+        }
+    }
+
+
 
     private Game buildGameFromCreateRequest(LessonCreateRequest request) {
         return buildGameFromRequest(request.getGameId(), request.getGameName(), request.getTimeLimit());

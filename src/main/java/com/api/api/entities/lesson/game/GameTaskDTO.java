@@ -24,4 +24,6 @@ public class GameTaskDTO {
         this.correctAnswer = correctAnswer;
         this.gameAnswersTypeId = gameAnswersTypeId;
     }
+
+    public GameTaskDTO() {}
 }
