@@ -105,6 +105,7 @@ public class LessonService {
             String theoryStep4 = (theory != null && theory.getStep4() != null) ? theory.getStep4().getTheory_text() : "N/A";
 
             LessonDetailsDTO detailsDTO = new LessonDetailsDTO(
+                    theory.getId(),
                     lesson.getTitle(),
                     lessonPlanSteps.get("step1"),
                     lessonPlanSteps.get("step2"),

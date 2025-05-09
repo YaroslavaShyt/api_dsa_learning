@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LessonDetailsDTO {
-
+    private Long id;
     private String lessonTitle;
     private String step1Plan;
     private String step2Plan;
@@ -23,10 +23,13 @@ public class LessonDetailsDTO {
 
 
 
-    public LessonDetailsDTO(String lessonTitle, String step1Plan, String step2Plan, String step3Plan, String step4Plan,
+    public LessonDetailsDTO(
+            Long id,
+            String lessonTitle, String step1Plan, String step2Plan, String step3Plan, String step4Plan,
                             String theoryStep1, String theoryStep2, String theoryStep3, String theoryStep4,
                             String imageStep1, String imageStep2, String imageStep3, String imageStep4
                             ) {
+        this.id = id;
         this.lessonTitle = lessonTitle;
         this.step1Plan = step1Plan;
         this.step2Plan = step2Plan;
