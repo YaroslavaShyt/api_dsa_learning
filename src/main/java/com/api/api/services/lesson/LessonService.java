@@ -113,7 +113,11 @@ public class LessonService {
                     theoryStep1,
                     theoryStep2,
                     theoryStep3,
-                    theoryStep4
+                    theoryStep4,
+                    theory != null && theory.getStep1() != null && theory.getStep1().getTheory_image() != null ? theory.getStep1().getTheory_image() : "",
+                    theory != null && theory.getStep2() != null && theory.getStep2().getTheory_image() != null ? theory.getStep2().getTheory_image() : "",
+                    theory != null && theory.getStep3() != null && theory.getStep3().getTheory_image() != null ? theory.getStep3().getTheory_image() : "",
+                    theory != null && theory.getStep1() != null && theory.getStep4().getTheory_image() != null ? theory.getStep4().getTheory_image() : ""
             );
 
             return Optional.of(detailsDTO);
