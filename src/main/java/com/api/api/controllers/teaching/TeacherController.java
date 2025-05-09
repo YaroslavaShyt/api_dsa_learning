@@ -24,7 +24,7 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateLesson(@PathVariable Long id, @RequestBody LessonUpdateRequest request) {
+    public ResponseEntity<?> updateLesson(@PathVariable Long id, @ModelAttribute LessonUpdateRequest request) {
         teacherService.updateLesson(id, request);
         return ResponseEntity.ok().build();
     }
