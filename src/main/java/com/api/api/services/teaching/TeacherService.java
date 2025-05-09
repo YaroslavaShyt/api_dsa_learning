@@ -47,7 +47,7 @@ public class TeacherService {
     private final AnswerVariantsRepository answerVariantsRepository;
     private final AnswersRepository answersRepository;
     private final GameTaskAnswersTypeRepository gameTaskAnswersTypeRepository;
-    private final  LearningCategoryRepository categoryRepository;
+    private final LearningCategoryRepository categoryRepository;
 
 
     @Transactional
@@ -77,7 +77,8 @@ public class TeacherService {
 
         Theory theory = buildTheoryFromRequest(
                 request.getTheoryStep1(), request.getTheoryStep2(), request.getTheoryStep3(), request.getTheoryStep4(),
-                request.getTheoryImageStep1(), request.getTheoryImageStep2(), request.getTheoryImageStep3(), request.getTheoryImageStep4(),
+                Optional.ofNullable(request.getTheoryImageStep1()), Optional.ofNullable(request.getTheoryImageStep2()),
+                Optional.ofNullable(request.getTheoryImageStep3()), Optional.ofNullable(request.getTheoryImageStep4()),
                 lessonPlan
         );
         lesson.setTheory(theory);
@@ -198,14 +199,15 @@ public class TeacherService {
     private String replaceImage(String oldImagePath, MultipartFile newFile) {
         if (newFile != null && !newFile.isEmpty()) {
             deleteTheoryImage(oldImagePath);
-            return saveTheoryImage(newFile);
+            return saveTheoryImage(Optional.of(newFile));
         }
         return oldImagePath;
     }
 
     private Theory buildTheoryFromRequest(
             String theoryStep1, String theoryStep2, String theoryStep3, String theoryStep4,
-            MultipartFile img1, MultipartFile img2, MultipartFile img3, MultipartFile img4,
+            Optional<MultipartFile> img1, Optional<MultipartFile> img2, Optional<MultipartFile> img3,
+            Optional<MultipartFile> img4,
             LessonPlan plan
     ) {
         String imagePath1 = saveTheoryImage(img1);
@@ -230,21 +232,22 @@ public class TeacherService {
         return theory;
     }
 
-    private String saveTheoryImage(MultipartFile file) {
-        if (file == null || file.isEmpty()) return null;
+    private String saveTheoryImage(Optional<MultipartFile> file) {
+        if (file.isPresent()) {
+            final MultipartFile multipartFile = file.get();
+            try {
+                String uploadDir = "uploads/theory/";
+                Files.createDirectories(Paths.get(uploadDir));
 
-        try {
-            String uploadDir = "uploads/theory/";
-            Files.createDirectories(Paths.get(uploadDir));
+                String filename = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
+                Path filePath = Paths.get(uploadDir, filename);
+                Files.copy(multipartFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-            Path filePath = Paths.get(uploadDir, filename);
-            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-            return "/files/theory/" + filename;
-        } catch (IOException e) {
-            throw new RuntimeException("Не вдалося зберегти файл", e);
-        }
+                return "/files/theory/" + filename;
+            } catch (IOException e) {
+                throw new RuntimeException("Не вдалося зберегти файл", e);
+            }
+        } return "";
     }
 
     private void deleteTheoryImage(String imagePath) {
@@ -257,7 +260,6 @@ public class TeacherService {
             }
         }
     }
-
 
 
     private Game buildGameFromCreateRequest(LessonCreateRequest request) {
@@ -285,7 +287,7 @@ public class TeacherService {
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new EntityNotFoundException("Lesson not found"));
 
-          deleteGameTasksFromGame(lesson.getGame());
+        deleteGameTasksFromGame(lesson.getGame());
 
         lessonRepository.delete(lesson);
 
@@ -324,6 +326,7 @@ public class TeacherService {
 
         return topicRepository.save(topic);
     }
+
     public void deleteTopic(Long id) {
         if (!topicRepository.existsById(id)) {
             throw new RuntimeException("Topic not found with id: " + id);
