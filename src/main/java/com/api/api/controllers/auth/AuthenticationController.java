@@ -85,7 +85,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signin/admin")
-    public Object authenticateUser(@RequestBody Admin admin) {
+    public Object authenticateAdminUser(@RequestBody Admin admin) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         admin.getUsername(),
