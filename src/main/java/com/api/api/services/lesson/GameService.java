@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -17,6 +19,36 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final GameTaskToGameRepository gameTaskToGameRepository;
+
+    public Optional<GroupedGameDetailsDTO> getGroupedGameDetailsById(Long gameId) {
+        Optional<Game> gameOptional = gameRepository.findById(gameId);
+
+        if (gameOptional.isPresent()) {
+            Game game = gameOptional.get();
+
+            List<GameTaskToGame> gameTaskToGames = gameTaskToGameRepository.findByGame(game);
+            List<GameTaskDTO> gameTaskDTOs = new ArrayList<>();
+
+            for (GameTaskToGame taskToGame : gameTaskToGames) {
+                GameTaskDTO gameTaskDTO = getGameTaskDTO(taskToGame);
+                gameTaskDTOs.add(gameTaskDTO);
+            }
+
+            Map<String, List<GameTaskDTO>> groupedTasks = gameTaskDTOs.stream()
+                    .collect(Collectors.groupingBy(GameTaskDTO::getTaskLevel));
+
+            GroupedGameDetailsDTO groupedDetails = new GroupedGameDetailsDTO(
+                    game.getId(),
+                    game.getName(),
+                    game.getTimeLimit(),
+                    groupedTasks
+            );
+
+            return Optional.of(groupedDetails);
+        }
+
+        return Optional.empty();
+    }
 
     public Optional<GameDetailsDTO> getGameDetailsById(Long gameId) {
         Optional<Game> gameOptional = gameRepository.findById(gameId);
@@ -63,7 +95,8 @@ public class GameService {
                 gameTask.getQuestion(),
                 answerOptions,
                 correctAnswer,
-                gameTask.getAnswersType().getId()
+                gameTask.getAnswersType().getId(),
+                taskToGame.getTask_level()
         );
     }
 }

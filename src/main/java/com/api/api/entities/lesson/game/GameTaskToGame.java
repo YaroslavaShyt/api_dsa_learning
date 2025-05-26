@@ -22,6 +22,9 @@ public class GameTaskToGame {
     @JoinColumn(name = "game_task_id", nullable = false)
     private GameTask gameTask;
 
+    @Column(name = "task_level")
+    private String task_level;
+
     public GameTaskToGame(Game game, GameTask gameTask) {
         this.game = game;
         this.gameTask = gameTask;

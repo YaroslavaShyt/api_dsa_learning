@@ -4,7 +4,6 @@ import com.api.api.entities.lesson.CategoryWithTopicsDTO;
 import com.api.api.entities.lesson.Lesson;
 import com.api.api.entities.lesson.LessonDetailsDTO;
 import com.api.api.entities.lesson.LessonSummaryDTO;
-import com.api.api.entities.lesson.game.GameDetailsDTO;
 import com.api.api.services.lesson.GameService;
 import com.api.api.services.lesson.LessonService;
 import lombok.RequiredArgsConstructor;
@@ -53,9 +52,10 @@ public class LessonController {
     }
 
     @GetMapping("/{id}/game")
-    public ResponseEntity<GameDetailsDTO> getLessonGame(@PathVariable("id") Long gameId) {
-        Optional<GameDetailsDTO> gameDetails = gameService.getGameDetailsById(gameId);
-        return gameDetails.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+    public ResponseEntity<?> getLessonGame(@PathVariable("id") Long gameId) {
+        return gameService.getGroupedGameDetailsById(gameId)
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
 

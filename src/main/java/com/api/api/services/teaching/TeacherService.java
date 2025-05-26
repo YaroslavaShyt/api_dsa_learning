@@ -107,7 +107,9 @@ public class TeacherService {
 
             gameTaskRepository.save(gameTask);
 
-            gameTaskToGameRepository.save(new GameTaskToGame(game, gameTask));
+            GameTaskToGame link = new GameTaskToGame(game, gameTask);
+            link.setTask_level(taskDTO.getTaskLevel());
+            gameTaskToGameRepository.save(link);
         }
     }
 
